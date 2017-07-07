@@ -93,13 +93,11 @@ int main(int argc, char **argv) {
 
     SDL_GLContext glContext = SDL_GL_CreateContext(window);
 
-
-
     shader_program = common_get_shader_program(vertex_shader_source, fragment_shader_source);
     pos = glGetAttribLocation(shader_program, "position");
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 640, 480);
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -113,7 +111,6 @@ int main(int argc, char **argv) {
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glDeleteBuffers(1, &vbo);
-
 
     SDL_GL_SwapWindow(window);
 
