@@ -14,13 +14,25 @@
 #ifndef FSEOGLMODEL_H
 #define FSEOGLMODEL_H
 
-class FSGLModel {
+#include <memory>
+
+#include "../Faces/FSGLFaces.h"
+#include "../Vertices/FSGLVertices.h"
+#include "../Resource/FSGLResource.h"
+
+using namespace std;
+
+class FSGLModel: public FSGLResource {
+    
 public:
     FSGLModel();
     FSGLModel(const FSGLModel& orig);
     virtual ~FSGLModel();
+    
 private:
 
+    unique_ptr<FSGLVertices> vertices;
+    unique_ptr<FSGLFaces> faces;
 };
 
 #endif /* FSEOGLMODEL_H */

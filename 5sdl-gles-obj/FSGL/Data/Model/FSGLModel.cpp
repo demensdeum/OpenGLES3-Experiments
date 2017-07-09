@@ -13,7 +13,13 @@
 
 #include "FSGLModel.h"
 
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
 FSGLModel::FSGLModel() {
+
 }
 
 FSGLModel::FSGLModel(const FSGLModel& orig) {

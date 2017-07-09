@@ -13,6 +13,8 @@
 
 #include "FSGLController.h"
 
+#include "../Data/ResourcesLoader/FSGLResourceLoader.h"
+
 FSGLController::FSGLController() {
 }
 
@@ -26,6 +28,8 @@ void FSGLController::run() {
 }
 
 void FSGLController::addModel(shared_ptr<FSGLModel> model) {
+    
+    
     
 }
 

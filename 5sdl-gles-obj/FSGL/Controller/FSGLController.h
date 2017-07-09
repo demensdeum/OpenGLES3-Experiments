@@ -25,6 +25,7 @@
 using namespace std;
 
 class FSGLController {
+    
 public:
     FSGLController();
     FSGLController(const FSGLController& orig);

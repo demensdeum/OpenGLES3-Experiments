@@ -34,6 +34,8 @@ private:
 
     SDL_GLContext context;
     SDL_Window *window;
+    
+    void loadBasicShaderProgram();
 };
 
 #endif /* FSEOGLCORE_H */
