@@ -15,6 +15,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <regex>
+
+using namespace std;
 
 FSGLModelLoaderObj::FSGLModelLoaderObj() {
 }
@@ -23,20 +26,40 @@ FSGLModelLoaderObj::FSGLModelLoaderObj(const FSGLModelLoaderObj& orig) {
 }
 
 shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath) {
-    
+
     auto modelPathString = modelPath->c_str();
-    
+
     auto model = make_shared<FSGLModel>();
-    
+
     ifstream modelFile(modelPathString);
     string line;
-    
+
+    auto vertexRegex = regex("(v)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)");
+    auto faceRegex = regex("(f)\\s(\\d+)\\s(\\d+)\\s+(\\d)+");
+
+    smatch smatch;
+
     while (getline(modelFile, line)) {
+
+        if (regex_search(line, smatch, vertexRegex)) {
+
+            for (auto i = 0; i < smatch.size(); ++i) {
+                
+                cout << i << ": " << smatch[i] << endl;
+                
+            }
+        }        
         
-        cout << line << endl;
-        
+        if (regex_search(line, smatch, faceRegex)) {
+
+            for (auto i = 0; i < smatch.size(); ++i) {
+                
+                cout << i << ": " << smatch[i] << endl;
+                
+            }
+        }
     }
-    
+
     return model;
 }
 
