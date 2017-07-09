@@ -18,6 +18,8 @@
 
 #include <memory>
 
+#include "../Data/Model/FSGLModel.h"
+
 using namespace std;
 
 class FSGLCore {
@@ -27,6 +29,10 @@ public:
     virtual ~FSGLCore();
     
     void run();
+    
+    void addModel(shared_ptr<FSGLModel> model);
+    
+    void render();
     
     void stop();
     

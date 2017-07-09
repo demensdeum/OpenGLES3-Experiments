@@ -38,6 +38,8 @@ public:
     
     void setCamera(shared_ptr<FSGLCamera> camera);
     
+    void render();
+    
     void stop();
     
 private:

@@ -29,6 +29,9 @@ public:
     FSGLModel(const FSGLModel& orig);
     virtual ~FSGLModel();
     
+    void addVertex(float x, float y, float z);
+    void addFace(int x, int y, int z);
+    
 private:
 
     unique_ptr<FSGLVertices> vertices;

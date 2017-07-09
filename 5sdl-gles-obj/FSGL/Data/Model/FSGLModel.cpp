@@ -22,6 +22,16 @@ FSGLModel::FSGLModel() {
 
 }
 
+void FSGLModel::addVertex(float x, float y, float z) {
+    
+    vertices->addVertex(x, y, z);
+}
+
+void FSGLModel::addFace(int x, int y, int z) {
+    
+    faces->addFace(x, y, z);
+}
+
 FSGLModel::FSGLModel(const FSGLModel& orig) {
 }
 

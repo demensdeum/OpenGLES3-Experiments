@@ -43,19 +43,25 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
 
         if (regex_search(line, smatch, vertexRegex)) {
 
-            for (auto i = 0; i < smatch.size(); ++i) {
+            if (smatch.length() == 4) {
                 
-                cout << i << ": " << smatch[i] << endl;
+                float x = stof(smatch[1]);
+                float y = stof(smatch[2]);
+                float z = stof(smatch[3]);
                 
+                model->addVertex(x, y, z);
             }
         }        
         
         if (regex_search(line, smatch, faceRegex)) {
 
-            for (auto i = 0; i < smatch.size(); ++i) {
+            if (smatch.length() == 4) {
                 
-                cout << i << ": " << smatch[i] << endl;
+                int x = stoi(smatch[1]);
+                int y = stoi(smatch[2]);
+                int z = stoi(smatch[3]);
                 
+                model->addFace(x, y, z);
             }
         }
     }

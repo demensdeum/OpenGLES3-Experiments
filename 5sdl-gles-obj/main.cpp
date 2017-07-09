@@ -17,6 +17,8 @@ int main(int argc, char **argv) {
     
     controller->addModel(model);
     
+    controller->render();
+    
     this_thread::sleep_for(chrono::milliseconds(2000));
     
     controller->stop();

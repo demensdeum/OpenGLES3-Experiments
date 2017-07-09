@@ -29,7 +29,7 @@ void FSGLController::run() {
 
 void FSGLController::addModel(shared_ptr<FSGLModel> model) {
     
-    
+    core->addModel(model);
     
 }
 
@@ -37,9 +37,16 @@ void FSGLController::setCamera(shared_ptr<FSGLCamera> camera) {
     
 }
 
+void FSGLController::render() {
+
+    core->render();
+    
+}
+
 void FSGLController::stop() {
     
     core->stop();
+    
 }
 
 FSGLController::~FSGLController() {
