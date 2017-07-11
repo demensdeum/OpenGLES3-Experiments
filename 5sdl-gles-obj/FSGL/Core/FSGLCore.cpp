@@ -13,9 +13,9 @@
 
 #include "FSGLCore.h"
 
-#include <GLES3/gl3.h>
-
 #include "../Data/Model/FSGLModel.h"
+
+#include <glm/gtc/type_ptr.hpp>
 
 static const GLfloat vertices[] = {
     0.0f, 0.5f, 0.0f,
@@ -25,9 +25,11 @@ static const GLfloat vertices[] = {
 
 static const GLchar* vertex_shader_source =
         "#version 100\n"
-        "attribute vec3 position;\n"
+        "uniform mat4 projectionMatrix;\n"
+        "uniform mat4 modelMatrix;\n"
+        "attribute vec4 position;\n"
         "void main() {\n"
-        "   gl_Position = vec4(position, 1.0);\n"
+        "   gl_Position = projectionMatrix * modelMatrix * position;\n"
         "}\n";
 
 static const GLchar* fragment_shader_source =
@@ -36,7 +38,7 @@ static const GLchar* fragment_shader_source =
         "   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}\n";  
 
-GLint common_get_shader_program(const char *vertex_shader_source, const char *fragment_shader_source) {
+GLint FSGLCore::common_get_shader_program(const char *vertex_shader_source, const char *fragment_shader_source) {
 
     enum Consts {
         INFOLOG_LEN = 512
@@ -47,7 +49,7 @@ GLint common_get_shader_program(const char *vertex_shader_source, const char *fr
     GLint shader_program;
     GLint success;
     GLint vertex_shader;
-
+    
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
@@ -70,14 +72,18 @@ GLint common_get_shader_program(const char *vertex_shader_source, const char *fr
     glAttachShader(shader_program, vertex_shader);
     glAttachShader(shader_program, fragment_shader);
     glLinkProgram(shader_program);
+    
     glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(shader_program, INFOLOG_LEN, NULL, infoLog);
         printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-    }
+    }     
+    
+
 
     glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
+    glDeleteShader(fragment_shader); 
+    
     return shader_program;
 }
 
@@ -98,11 +104,7 @@ void FSGLCore::run() {
             SDL_WINDOW_OPENGL
             );
 
-
     context = SDL_GL_CreateContext(window);
-
-    
-
 }
 
 void FSGLCore::render() {
@@ -131,6 +133,52 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
+    
+    GLint projectionMatrixUniform;
+    
+    projectionMatrixUniform = glGetUniformLocation(shader_program, "projectionMatrix");
+    
+    if (projectionMatrixUniform == -1) {
+        
+        printf("error\n");
+    }
+    
+    projectionMatrix = glm::perspective(90.0f, float(640.0/480.0), 4.0f, 10.0f);
+    
+    glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix)); 
+    
+    {
+    auto glError = glGetError();
+    
+    if (glError == GL_NO_ERROR) {
+        
+        printf("No GL Error\n");
+    }
+    
+        printf("glError: %d\n", glError);
+    }        
+    
+    
+    modelMatrix = glm::mat4(1.0);
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, -5.0f));       
+    
+    GLint modelMatrixUniform;
+    
+    modelMatrixUniform = glGetUniformLocation(shader_program, "modelMatrix");
+    
+    glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
+    
+    {
+    auto glError = glGetError();
+    
+    if (glError == GL_NO_ERROR) {
+        
+        printf("No GL Error\n");
+    }
+    
+        printf("glError: %d\n", glError);
+    }       
+            
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glDeleteBuffers(1, &vbo);

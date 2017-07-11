@@ -20,6 +20,11 @@
 
 #include "../Data/Model/FSGLModel.h"
 
+#include <GLES3/gl3.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 using namespace std;
 
 class FSGLCore {
@@ -37,11 +42,14 @@ public:
     void stop();
     
 private:
+    
+    GLint common_get_shader_program(const char *vertex_shader_source, const char *fragment_shader_source);
 
     SDL_GLContext context;
     SDL_Window *window;
     
-    void loadBasicShaderProgram();
+    glm::mat4 projectionMatrix;
+    glm::mat4 modelMatrix;
 };
 
 #endif /* FSEOGLCORE_H */
