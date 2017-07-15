@@ -14,7 +14,7 @@
 #ifndef FSGLVERTICES_H
 #define FSGLVERTICES_H
 
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -26,9 +26,13 @@ public:
     
     void addVertex(float x, float y, float z);
     
+    float coordinateAtIndex(int index);
+    
+    int count();
+    
 private:
 
-    list<float> vertices;
+    vector<float> vertices;
     
 };
 

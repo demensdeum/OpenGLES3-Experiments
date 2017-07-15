@@ -41,13 +41,19 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
 
     while (getline(modelFile, line)) {
 
+        //printf(line.c_str());
+        //printf("\n");
+        
         if (regex_search(line, smatch, vertexRegex)) {
 
-            if (smatch.length() == 4) {
+            //printf("%ld\n", smatch.length());
+            //printf(smatch[2].str().c_str());
+            
+            if (smatch.length() > 0) {
                 
-                float x = stof(smatch[1]);
-                float y = stof(smatch[2]);
-                float z = stof(smatch[3]);
+                float x = stof(smatch[2]);
+                float y = stof(smatch[3]);
+                float z = stof(smatch[4]);
                 
                 model->addVertex(x, y, z);
             }

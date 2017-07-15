@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
     
     controller->run();
     
+    //auto model = static_pointer_cast<FSGLModel>(FSGLResourceLoader::loadResource(make_shared<string>("triangle.obj")));
     auto model = static_pointer_cast<FSGLModel>(FSGLResourceLoader::loadResource(make_shared<string>("teapot.obj")));
     
     controller->addModel(model);

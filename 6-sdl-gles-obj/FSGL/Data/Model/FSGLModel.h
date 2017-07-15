@@ -20,6 +20,8 @@
 #include "../Vertices/FSGLVertices.h"
 #include "../Resource/FSGLResource.h"
 
+#include <GLES3/gl3.h>
+
 using namespace std;
 
 class FSGLModel: public FSGLResource {
@@ -32,10 +34,16 @@ public:
     void addVertex(float x, float y, float z);
     void addFace(int x, int y, int z);
     
+    GLfloat* glVertices();
+    
+    unique_ptr<FSGLVertices> vertices;
+    unique_ptr<FSGLFaces> faces;    
+    
 private:
 
-    unique_ptr<FSGLVertices> vertices;
-    unique_ptr<FSGLFaces> faces;
+    GLfloat *_glVertices;
+    
+
 };
 
 #endif /* FSEOGLMODEL_H */

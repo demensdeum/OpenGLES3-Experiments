@@ -27,6 +27,16 @@ void FSGLVertices::addVertex(float x, float y, float z) {
     
 }
 
+float FSGLVertices::coordinateAtIndex(int index) {
+    
+    return vertices[index];
+}
+
+int FSGLVertices::count() {
+    
+    return vertices.size();
+}
+
 FSGLVertices::~FSGLVertices() {
 }
 

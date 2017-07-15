@@ -49,6 +49,7 @@ private:
     SDL_Window *window;
     
     glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix;
     glm::mat4 modelMatrix;
 };
 

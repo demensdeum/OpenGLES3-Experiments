@@ -17,19 +17,22 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-static const GLfloat vertices[] = {
+#include "teapot_model.h"
+
+/*static const GLfloat vertices[] = {
     0.0f, 0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
     -0.5f, -0.5f, 0.0f,
-};
+};*/
 
 static const GLchar* vertex_shader_source =
         "#version 100\n"
         "uniform mat4 projectionMatrix;\n"
+        "uniform mat4 viewMatrix;\n"
         "uniform mat4 modelMatrix;\n"
         "attribute vec4 position;\n"
         "void main() {\n"
-        "   gl_Position = projectionMatrix * modelMatrix * position;\n"
+        "   gl_Position = projectionMatrix * modelMatrix * viewMatrix * position;\n"
         "}\n";
 
 static const GLchar* fragment_shader_source =
@@ -49,6 +52,7 @@ GLint FSGLCore::common_get_shader_program(const char *vertex_shader_source, cons
     GLint shader_program;
     GLint success;
     GLint vertex_shader;
+   
     
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
@@ -78,15 +82,12 @@ GLint FSGLCore::common_get_shader_program(const char *vertex_shader_source, cons
         glGetProgramInfoLog(shader_program, INFOLOG_LEN, NULL, infoLog);
         printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
     }     
-    
-
 
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader); 
     
     return shader_program;
 }
-
 
 FSGLCore::FSGLCore() {
 }
@@ -115,6 +116,14 @@ void FSGLCore::render() {
 
 void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
+    //GLfloat *vertices = model->glVertices();
+    
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);    
+    
     GLuint vbo;
     GLint pos;
     
@@ -124,67 +133,49 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, 640, 480);
 
+    glDisable(GL_CULL_FACE);
+    
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model->vertices->count(), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
     glEnableVertexAttribArray(pos);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    GLuint indexBuffer;
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);      
 
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shader_program);
     
     GLint projectionMatrixUniform;
-    
-    projectionMatrixUniform = glGetUniformLocation(shader_program, "projectionMatrix");
-    
-    if (projectionMatrixUniform == -1) {
-        
-        printf("error\n");
-    }
-    
-    projectionMatrix = glm::perspective(90.0f, float(640.0/480.0), 4.0f, 10.0f);
-    
-    glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix)); 
-    
-    {
-    auto glError = glGetError();
-    
-    if (glError == GL_NO_ERROR) {
-        
-        printf("No GL Error\n");
-    }
-    
-        printf("glError: %d\n", glError);
-    }        
-    
-    
-    modelMatrix = glm::mat4(1.0);
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, -5.0f));       
-    
     GLint modelMatrixUniform;
+    GLint viewMatrixUniform;
     
-    modelMatrixUniform = glGetUniformLocation(shader_program, "modelMatrix");
-    
+    projectionMatrix = glm::perspective(90.0f, float(640.0/480.0), 0.0f, 100.0f);
+    projectionMatrixUniform = glGetUniformLocation(shader_program, "projectionMatrix");
+    glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix)); 
+
+    modelMatrix = glm::mat4(1.0);    
+    modelMatrixUniform = glGetUniformLocation(shader_program, "modelMatrix");    
     glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
-    
-    {
-    auto glError = glGetError();
-    
-    if (glError == GL_NO_ERROR) {
-        
-        printf("No GL Error\n");
-    }
-    
-        printf("glError: %d\n", glError);
-    }       
-            
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    viewMatrix = glm::mat4(1.0);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, -0.1f, -0.2f));
+    viewMatrixUniform = glGetUniformLocation(shader_program, "viewMatrix");   
+    glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));      
+
+    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), 
+					   GL_UNSIGNED_SHORT, 0);    
 
     glDeleteBuffers(1, &vbo);
 
     SDL_GL_SwapWindow(window);
-    
 }
 
 void FSGLCore::stop() {
