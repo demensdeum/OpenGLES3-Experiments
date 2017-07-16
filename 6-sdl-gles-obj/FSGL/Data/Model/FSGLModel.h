@@ -36,9 +36,6 @@ public:
     
     vector<GLfloat> vertices;
     vector<GLushort> indices;
-
-    int verticesCount;
-    int indicesCount;
     
     GLushort *_glIndices;
     GLfloat *_glVertices;

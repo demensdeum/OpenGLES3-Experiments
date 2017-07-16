@@ -121,11 +121,23 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
     GLfloat *vertices = model->glVertices();
     GLushort *indices = model->glIndices();
     
-    cout << model->verticesCount << endl;
+    cout << "--- Vertices ---" << endl;
     
-    for (auto i = 0; i < model->verticesCount; i+=3 ) {
+    cout << model->vertices.size() << endl;
+    
+    for (auto i = 0; i < model->vertices.size(); i+=3 ) {
         
         cout << model->vertices[i] << " " << model->vertices[i + 1] << " " << model->vertices[i + 2] << endl;
+        
+    }
+    
+    cout << "--- Indices ---" << endl;
+    
+    cout << model->indices.size() << endl;
+    
+    for (auto i = 0; i < model->indices.size(); i+= 3) {
+        
+        cout << model->indices[i] << " " << model->indices[i + 1] << " " << model->indices[i + 2] << endl;
         
     }
     
@@ -139,11 +151,11 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model->verticesCount, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model->vertices.size(), vertices, GL_STATIC_DRAW);
 
-//    glGenBuffers(1, &indexBuffer);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLint) * model->indices.size(), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(pos);
@@ -176,8 +188,7 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //glDrawElements(GL_TRIANGLES, model->indicesCount, GL_UNSIGNED_SHORT, 0);
-    glDrawArrays(GL_TRIANGLES, 0, model->verticesCount / 3);
+    glDrawElements(GL_TRIANGLES, model->indices.size(), GL_UNSIGNED_SHORT, 0);
 
     SDL_GL_SwapWindow(window);
 

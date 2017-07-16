@@ -61,6 +61,27 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
             
         }
         
+        auto faceRegex = regex("(f)\\s(\\d*)\\s(\\d*)\\s(\\d*)");
+        
+        if (regex_search(line, smatch, faceRegex)) {
+            
+            cout << smatch.size() << endl;
+            
+            cout << smatch[2] << endl;
+            cout << smatch[3] << endl;
+            cout << smatch[4] << endl;
+            
+            GLint x = std::stoi(smatch[2]);
+            GLint y = std::stoi(smatch[3]);
+            GLint z = std::stoi(smatch[4]);
+            
+            cout << line << endl;        
+            
+            model->indices.push_back(x);
+            model->indices.push_back(y);
+            model->indices.push_back(z);
+        }
+        
     }
     
     return model;

@@ -19,9 +19,6 @@
 using namespace std;
 
 FSGLModel::FSGLModel() {
-
-    verticesCount = 0;
-    indicesCount = 0;
     
 }
 
@@ -48,8 +45,6 @@ GLfloat* FSGLModel::glVertices() {
         _glVertices[i] = vertices[i];
         
     }
-    
-    verticesCount = vertices.size();
     
     return _glVertices;
     
