@@ -16,11 +16,11 @@
 
 #include <memory>
 
-#include "../Faces/FSGLFaces.h"
-#include "../Vertices/FSGLVertices.h"
 #include "../Resource/FSGLResource.h"
 
 #include <GLES3/gl3.h>
+
+#include <vector>
 
 using namespace std;
 
@@ -31,19 +31,17 @@ public:
     FSGLModel(const FSGLModel& orig);
     virtual ~FSGLModel();
     
-    void addVertex(float x, float y, float z);
-    void addFace(int x, int y, int z);
-    
     GLfloat* glVertices();
+    GLushort* glIndices();
     
-    unique_ptr<FSGLVertices> vertices;
-    unique_ptr<FSGLFaces> faces;    
-    
-private:
+    vector<GLfloat> vertices;
+    vector<GLushort> indices;
 
+    int verticesCount;
+    int indicesCount;
+    
+    GLushort *_glIndices;
     GLfloat *_glVertices;
-    
-
 };
 
 #endif /* FSEOGLMODEL_H */

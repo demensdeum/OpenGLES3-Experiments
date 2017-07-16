@@ -20,45 +20,39 @@ using namespace std;
 
 FSGLModel::FSGLModel() {
 
-    vertices = make_unique<FSGLVertices>();
-    faces = make_unique<FSGLFaces>();
+    verticesCount = 0;
+    indicesCount = 0;
+    
 }
 
-void FSGLModel::addVertex(float x, float y, float z) {
-
-    vertices->addVertex(x, y, z);
-}
-
-void FSGLModel::addFace(int x, int y, int z) {
-
-    faces->addFace(x, y, z);
+GLushort* FSGLModel::glIndices() {
+    
+    _glIndices = (GLushort *) malloc(indices.size() * sizeof(GLushort));
+    
+    for (auto i = 0; i < indices.size(); i++) {
+        
+        _glIndices[i] = indices[i];
+        
+    }
+    
+    return _glIndices;
+    
 }
 
 GLfloat* FSGLModel::glVertices() {
 
-    _glVertices = (GLfloat *) malloc(sizeof(GLfloat) * vertices->count());
+    _glVertices = (GLfloat *) malloc(vertices.size() * sizeof(GLfloat));
     
-    for (auto i = 0; i < vertices->count(); i++) {
+    for (auto i = 0; i < vertices.size(); i++) {
         
-        _glVertices[i] = vertices->coordinateAtIndex(i);
+        _glVertices[i] = vertices[i];
         
     }
     
-//    _glVertices = (GLfloat *) malloc(sizeof(GLfloat) * 9);
-//    
-//    _glVertices[0] = 0.f;
-//    _glVertices[1] = 0.5f;
-//    _glVertices[2] = 0.f;
-//    
-//    _glVertices[3] = 0.5f;
-//    _glVertices[4] = -0.5f;
-//    _glVertices[5] = 0.f;
-//            
-//    _glVertices[6] = -0.5f;
-//    _glVertices[7] = -0.5f;
-//    _glVertices[8] = -0.f;
-
+    verticesCount = vertices.size();
+    
     return _glVertices;
+    
 }
 
 FSGLModel::FSGLModel(const FSGLModel& orig) {

@@ -17,6 +17,8 @@
 #include <iostream>
 #include <regex>
 
+#include <string>
+
 using namespace std;
 
 FSGLModelLoaderObj::FSGLModelLoaderObj() {
@@ -30,48 +32,37 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
     auto modelPathString = modelPath->c_str();
 
     auto model = make_shared<FSGLModel>();
-
-    ifstream modelFile(modelPathString);
-    string line;
-
-    auto vertexRegex = regex("(v)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)");
-    auto faceRegex = regex("(f)\\s(\\d+)\\s(\\d+)\\s+(\\d)+");
-
-    smatch smatch;
-
-    while (getline(modelFile, line)) {
-
-        //printf(line.c_str());
-        //printf("\n");
+    
+    std::ifstream inputFile(modelPathString);
+    
+    std::string line;
+    
+    std::smatch smatch;
+    
+    while (std::getline(inputFile, line)) {
+        
+        auto vertexRegex = regex("(v)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)");
         
         if (regex_search(line, smatch, vertexRegex)) {
-
-            //printf("%ld\n", smatch.length());
-            //printf(smatch[2].str().c_str());
             
-            if (smatch.length() > 0) {
-                
-                float x = stof(smatch[2]);
-                float y = stof(smatch[3]);
-                float z = stof(smatch[4]);
-                
-                model->addVertex(x, y, z);
-            }
-        }        
-        
-        if (regex_search(line, smatch, faceRegex)) {
-
-            if (smatch.length() == 4) {
-                
-                int x = stoi(smatch[1]);
-                int y = stoi(smatch[2]);
-                int z = stoi(smatch[3]);
-                
-                model->addFace(x, y, z);
-            }
+            cout << smatch.size() << endl;
+            
+            cout << line << endl;
+            
+            cout << smatch[2] << " " << smatch[3] << " " << smatch[4] << endl;
+            
+            GLfloat x = std::stof(smatch[2]);
+            GLfloat y = std::stof(smatch[3]);
+            GLfloat z = std::stof(smatch[4]);
+            
+            model->vertices.push_back(x);
+            model->vertices.push_back(y);
+            model->vertices.push_back(z);
+            
         }
+        
     }
-
+    
     return model;
 }
 

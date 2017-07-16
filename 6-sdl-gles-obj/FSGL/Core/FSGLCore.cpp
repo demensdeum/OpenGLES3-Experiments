@@ -17,15 +17,16 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "teapot_model.h"
+//#include "newell_teapot.h"
 
-/*static const GLfloat vertices[] = {
-    0.0f, 0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-};*/
+#include <chrono>
+#include <thread>
 
-static const GLchar* vertex_shader_source =
+#include <iostream>
+
+using namespace std;
+
+static const GLchar* vertexShaderSource =
         "#version 100\n"
         "uniform mat4 projectionMatrix;\n"
         "uniform mat4 viewMatrix;\n"
@@ -35,25 +36,24 @@ static const GLchar* vertex_shader_source =
         "   gl_Position = projectionMatrix * modelMatrix * viewMatrix * position;\n"
         "}\n";
 
-static const GLchar* fragment_shader_source =
+static const GLchar* fragmentShaderSource =
         "#version 100\n"
         "void main() {\n"
         "   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
-        "}\n";  
+        "}\n";
 
 GLint FSGLCore::common_get_shader_program(const char *vertex_shader_source, const char *fragment_shader_source) {
 
     enum Consts {
         INFOLOG_LEN = 512
     };
-    
+
     GLchar infoLog[INFOLOG_LEN];
     GLint fragment_shader;
     GLint shader_program;
     GLint success;
     GLint vertex_shader;
-   
-    
+
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
@@ -76,16 +76,16 @@ GLint FSGLCore::common_get_shader_program(const char *vertex_shader_source, cons
     glAttachShader(shader_program, vertex_shader);
     glAttachShader(shader_program, fragment_shader);
     glLinkProgram(shader_program);
-    
+
     glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(shader_program, INFOLOG_LEN, NULL, infoLog);
         printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n%s\n", infoLog);
-    }     
+    }
 
     glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader); 
-    
+    glDeleteShader(fragment_shader);
+
     return shader_program;
 }
 
@@ -109,73 +109,80 @@ void FSGLCore::run() {
 }
 
 void FSGLCore::render() {
-    
-    
+
     SDL_GL_SwapWindow(window);
 }
 
 void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
-    //GLfloat *vertices = model->glVertices();
+    shader_program = common_get_shader_program(vertexShaderSource, fragmentShaderSource);
+    pos = glGetAttribLocation(shader_program, "position");
+
+    GLfloat *vertices = model->glVertices();
+    GLushort *indices = model->glIndices();
+    
+    cout << model->verticesCount << endl;
+    
+    for (auto i = 0; i < model->verticesCount; i+=3 ) {
+        
+        cout << model->vertices[i] << " " << model->vertices[i + 1] << " " << model->vertices[i + 2] << endl;
+        
+    }
     
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);    
-    
-    GLuint vbo;
-    GLint pos;
-    
-    auto shader_program = common_get_shader_program(vertex_shader_source, fragment_shader_source);
-    pos = glGetAttribLocation(shader_program, "position");
-    
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, 640, 480);
 
-    glDisable(GL_CULL_FACE);
-    
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model->vertices->count(), vertices, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
-    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    
-    glEnableVertexAttribArray(pos);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    GLuint indexBuffer;
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);      
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * model->verticesCount, vertices, GL_STATIC_DRAW);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+//    glGenBuffers(1, &indexBuffer);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(pos);
+
     glUseProgram(shader_program);
-    
+
     GLint projectionMatrixUniform;
     GLint modelMatrixUniform;
     GLint viewMatrixUniform;
-    
-    projectionMatrix = glm::perspective(90.0f, float(640.0/480.0), 0.0f, 100.0f);
-    projectionMatrixUniform = glGetUniformLocation(shader_program, "projectionMatrix");
-    glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix)); 
 
-    modelMatrix = glm::mat4(1.0);    
-    modelMatrixUniform = glGetUniformLocation(shader_program, "modelMatrix");    
-    glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix)); 
+    glm::mat4 projectionMatrix;
+    glm::mat4 modelMatrix;
+    glm::mat4 viewMatrix;
+
+    projectionMatrix = glm::perspective(90.0f, float(640.0 / 480.0), 0.0f, 100.0f);
+    projectionMatrixUniform = glGetUniformLocation(shader_program, "projectionMatrix");
+    glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+    modelMatrix = glm::mat4(1.0);
+    modelMatrixUniform = glGetUniformLocation(shader_program, "modelMatrix");
+    glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
     viewMatrix = glm::mat4(1.0);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, -0.1f, -0.2f));
-    viewMatrixUniform = glGetUniformLocation(shader_program, "viewMatrix");   
-    glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));      
 
-    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), 
-					   GL_UNSIGNED_SHORT, 0);    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glDeleteBuffers(1, &vbo);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -1.f));
+    viewMatrixUniform = glGetUniformLocation(shader_program, "viewMatrix");
+    glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //glDrawElements(GL_TRIANGLES, model->indicesCount, GL_UNSIGNED_SHORT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, model->verticesCount / 3);
 
     SDL_GL_SwapWindow(window);
+
+    this_thread::sleep_for(chrono::milliseconds(50));
+    
 }
 
 void FSGLCore::stop() {
@@ -183,6 +190,7 @@ void FSGLCore::stop() {
     SDL_GL_DeleteContext(context);
 
     SDL_Quit();
+    
 }
 
 FSGLCore::FSGLCore(const FSGLCore& orig) {

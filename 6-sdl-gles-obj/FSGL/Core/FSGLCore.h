@@ -51,6 +51,9 @@ private:
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
     glm::mat4 modelMatrix;
+    
+    GLuint shader_program, vbo, indexBuffer;
+    GLint pos;    
 };
 
 #endif /* FSEOGLCORE_H */

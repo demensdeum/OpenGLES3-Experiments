@@ -14,6 +14,9 @@
 #ifndef FSMODELLOADEROBJ_H
 #define FSMODELLOADEROBJ_H
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "../FSGLModelLoader.h"
 
 #include <memory>
@@ -26,10 +29,8 @@ public:
     FSGLModelLoaderObj(const FSGLModelLoaderObj& orig);
     virtual ~FSGLModelLoaderObj();
     
-    static shared_ptr<FSGLModel> loadModel(shared_ptr<string> modelPath);
+    static shared_ptr<FSGLModel> loadModel(shared_ptr<string> modelPath);   
     
-private:
-
 };
 
 #endif /* FSMODELLOADEROBJ_H */
