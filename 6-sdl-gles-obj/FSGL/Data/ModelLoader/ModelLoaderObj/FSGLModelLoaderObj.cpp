@@ -71,9 +71,9 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
             cout << smatch[3] << endl;
             cout << smatch[4] << endl;
             
-            GLint x = std::stoi(smatch[2]);
-            GLint y = std::stoi(smatch[3]);
-            GLint z = std::stoi(smatch[4]);
+            GLint x = std::stoi(smatch[2]) - 1;
+            GLint y = std::stoi(smatch[3]) - 1;
+            GLint z = std::stoi(smatch[4]) - 1;
             
             cout << line << endl;        
             
@@ -81,6 +81,27 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
             model->indices.push_back(y);
             model->indices.push_back(z);
         }
+        
+        auto faceRegexAdvance = regex("(f)\\s(\\d*)\\/\\/(\\d*)\\s(\\d*)\\/\\/(\\d*)\\s(\\d*)\\/\\/(\\d*)");
+        
+        if (regex_search(line, smatch, faceRegexAdvance)) {
+            
+            cout << smatch.size() << endl;
+            
+            cout << smatch[2] << endl;
+            cout << smatch[5] << endl;
+            cout << smatch[6] << endl;
+            
+            GLint x = std::stoi(smatch[2]) - 1;
+            GLint y = std::stoi(smatch[4]) - 1;
+            GLint z = std::stoi(smatch[6]) - 1;
+            
+            cout << line << endl;        
+            
+            model->indices.push_back(x);
+            model->indices.push_back(y);
+            model->indices.push_back(z);
+        }        
         
     }
     

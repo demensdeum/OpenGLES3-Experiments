@@ -141,9 +141,6 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
         
     }
     
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -182,7 +179,7 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -1.f));
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -2.f));
     viewMatrixUniform = glGetUniformLocation(shader_program, "viewMatrix");
     glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
