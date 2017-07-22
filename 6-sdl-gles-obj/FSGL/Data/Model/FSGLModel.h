@@ -37,6 +37,8 @@ public:
     vector<GLfloat> vertices;
     vector<GLushort> indices;
     
+private:
+    
     GLushort *_glIndices;
     GLfloat *_glVertices;
 };

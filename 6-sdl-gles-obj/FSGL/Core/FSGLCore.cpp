@@ -17,8 +17,6 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-//#include "newell_teapot.h"
-
 #include <chrono>
 #include <thread>
 
@@ -159,6 +157,12 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glUseProgram(shader_program);
 
+    GLuint textureCoordinateSlot = glGetAttribLocation(shader_program, "textureCoordinates");
+    glVertexAttribPointer(textureCoordinateSlot, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(textureCoordinateSlot);
+    
+    GLint textureUniform = glGetUniformLocation(shader_program, "texture");
+    
     GLint projectionMatrixUniform;
     GLint modelMatrixUniform;
     GLint viewMatrixUniform;
@@ -179,7 +183,7 @@ void FSGLCore::addModel(shared_ptr<FSGLModel> model) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -2.f));
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -3.f));
     viewMatrixUniform = glGetUniformLocation(shader_program, "viewMatrix");
     glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
