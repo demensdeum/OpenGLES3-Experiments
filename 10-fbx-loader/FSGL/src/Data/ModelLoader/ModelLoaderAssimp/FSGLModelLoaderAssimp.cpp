@@ -11,7 +11,7 @@
  * Created on July 9, 2017, 10:07 AM
  */
 
-#include "FSGLModelLoaderObj.h"
+#include "FSGLModelLoaderAssimp.h"
 
 #include <fstream>
 #include <iostream>
@@ -24,13 +24,13 @@
 
 using namespace std;
 
-FSGLModelLoaderObj::FSGLModelLoaderObj() {
+FSGLModelLoaderAssimp::FSGLModelLoaderAssimp() {
 }
 
-FSGLModelLoaderObj::FSGLModelLoaderObj(const FSGLModelLoaderObj& orig) {
+FSGLModelLoaderAssimp::FSGLModelLoaderAssimp(const FSGLModelLoaderAssimp& orig) {
 }
 
-shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath) {
+shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelPath) {
 
     auto modelPathString = modelPath->c_str();
 
@@ -41,7 +41,7 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
 
     if (scene == NULL) {
 
-        cout << "FSGLModelLoaderObj: cannot load model at path " << modelPath->c_str() << endl;
+        cout << "FSGLModelLoaderAssimp: cannot load model at path " << modelPath->c_str() << endl;
 
         exit(1);
     }
@@ -130,7 +130,7 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
 
                 material->GetTexture(aiTextureType_DIFFUSE, textureIndex, &texturePath);
 
-                //cout << texturePath.data << endl;
+                cout << "FSGLModelLoaderAssimp loading texture : " << texturePath.data << endl;
 
                 auto convertedTexturePath = make_shared<string>(texturePath.data);
 
@@ -140,7 +140,7 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
 
                 if (surface == nullptr) {
                     
-                    cout << "FSGLModelLoaderObj: cannot load texture: " << convertedMaterial->texturePath->c_str() << endl;
+                    cout << "FSGLModelLoaderAssimp: cannot load texture: " << convertedMaterial->texturePath->c_str() << endl;
                     
                 }
                 
@@ -193,5 +193,5 @@ shared_ptr<FSGLModel> FSGLModelLoaderObj::loadModel(shared_ptr<string> modelPath
     return model;
 }
 
-FSGLModelLoaderObj::~FSGLModelLoaderObj() {
+FSGLModelLoaderAssimp::~FSGLModelLoaderAssimp() {
 }

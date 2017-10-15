@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     controller->initialize();
     
     //auto model = static_pointer_cast<FSGLModel>(FSGLResourceLoader::loadResource(std::make_shared<string>("data/models/durotan/Durotan.obj")));
-    auto model = static_pointer_cast<FSGLModel>(FSGLResourceLoader::loadResource(std::make_shared<string>("data/models/skinnedCube/skinnedCube.obj")));
+    auto model = static_pointer_cast<FSGLModel>(FSGLResourceLoader::loadResource(std::make_shared<string>("data/models/skinnedCube/skinnedCube.fbx")));
     
     auto object = std::make_shared<FSGLObject>(model);
     

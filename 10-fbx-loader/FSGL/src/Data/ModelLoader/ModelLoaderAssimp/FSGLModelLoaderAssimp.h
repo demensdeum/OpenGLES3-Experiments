@@ -23,11 +23,11 @@
 
 using namespace std;
 
-class FSGLModelLoaderObj: public FSGLModelLoader {
+class FSGLModelLoaderAssimp: public FSGLModelLoader {
 public:
-    FSGLModelLoaderObj();
-    FSGLModelLoaderObj(const FSGLModelLoaderObj& orig);
-    virtual ~FSGLModelLoaderObj();
+    FSGLModelLoaderAssimp();
+    FSGLModelLoaderAssimp(const FSGLModelLoaderAssimp& orig);
+    virtual ~FSGLModelLoaderAssimp();
     
     static shared_ptr<FSGLModel> loadModel(shared_ptr<string> modelPath);   
     
