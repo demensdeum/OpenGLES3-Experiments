@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     auto controller = make_shared<FSGLController>();
     controller->initialize();
     
-    auto path = std::make_shared<string>("cube");
+    auto path = std::make_shared<string>("cube.fso");
     auto rawObject = FSGLObject().deserializeFromFile(path);
     auto object = static_pointer_cast<FSGLObject>(rawObject);
 
