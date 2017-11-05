@@ -54,6 +54,13 @@ shared_ptr<string> FSGLVector::serializeIntoString() {
     return stringContainer;
 }
 
+shared_ptr<FSGLVector> FSGLVector::copy() {
+    
+    auto vector = make_shared<FSGLVector>(x,y,z);
+    
+    return vector;
+}
+
 shared_ptr<FSGLSerializable> FSGLVector::deserializeFromString(shared_ptr<string> serializedData) {
 
     auto outputVector = make_shared<FSGLVector>();

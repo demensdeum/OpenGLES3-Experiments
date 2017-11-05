@@ -252,7 +252,7 @@ void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
 
         GLsizeiptr verticesBufferSize = mesh->glVerticesBufferSize;
         GLsizeiptr indicesBufferSize = mesh->glIndicesBufferSize;
-        GLsizei indicesCount = mesh->glIndicesCount;
+        GLsizei    indicesCount = mesh->glIndicesCount;
 
         GLint vertexSlot = glGetAttribLocation(shader_program, "vertex");
 
@@ -314,6 +314,7 @@ void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
         glDeleteBuffers(1, &vbo);
         glDeleteBuffers(1, &indexBuffer);
 
+        object->postRenderUpdate();
     }
 
 }

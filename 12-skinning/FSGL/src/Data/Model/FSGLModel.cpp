@@ -51,6 +51,32 @@ shared_ptr<FSGLSerializable> FSGLModel::deserializeFromString(shared_ptr<string>
     return object;
 }
 
+void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {
+    
+    if (currentAnimation != nullptr && currentAnimation->name->compare(animationName->c_str())== 0) {
+        
+        currentAnimation->currentOffset = animationOffset;
+        
+        return;
+    }
+    
+    for (auto animation : animations) {
+        
+        if (animation->name->compare(animationName->c_str()) == 0) {
+            
+            currentAnimation = animation;
+            
+        }
+    }
+    
+}
+
+void FSGLModel::incrementAnimation() {
+    
+    currentAnimation->increment();
+    
+}
+
 FSGLModel::~FSGLModel() {
 
 }

@@ -24,20 +24,29 @@ using namespace std;
 int main(int argc, char** argv) {
 
     cout << "Skinning animation... work in progress" << endl;
-    
+
     auto controller = make_shared<FSGLController>();
     controller->initialize();
-    
+
     auto path = std::make_shared<string>("cube.fso");
     auto rawObject = FSGLObject().deserializeFromFile(path);
     auto object = static_pointer_cast<FSGLObject>(rawObject);
 
     controller->addObject(object);
-    
-    controller->render();  
-    
-    this_thread::sleep_for(2s);
-    
+
+    auto animationName = make_shared<string>("Armature|Cube Move");
+
+    object->playAnimation(animationName, 0);
+
+    for (auto frameIndex = 0; frameIndex < 10; frameIndex++) {
+
+        controller->render();
+
+        this_thread::sleep_for(0.1s);
+
+    }
+
+
     return 0;
 }
 

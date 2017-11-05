@@ -123,8 +123,6 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                     convertedBone->name = make_shared<string>(boneName);
 
-                    convertedMesh->bones.push_back(convertedBone);
-
                     for (int boneIndex = 0; boneIndex < bone->mNumWeights; boneIndex++) {
 
                         auto weight = bone->mWeights[boneIndex];
@@ -137,6 +135,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                         convertedBone->vertexWeights.push_back(convertedWeight);
 
                     }
+                    
+                    convertedMesh->bones.push_back(convertedBone);
 
                 }
 
@@ -239,17 +239,40 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
             convertedAnimation->ticksPerSecond = animation->mTicksPerSecond;
 
             for (auto nodeAnimationIndex = 0; nodeAnimationIndex < animation->mNumChannels; nodeAnimationIndex++) {
-                
+
                 auto nodeAnimation = animation->mChannels[nodeAnimationIndex];
-                
+
                 auto nodeAnimationName = nodeAnimation->mNodeName.C_Str();
-                
+
                 auto convertedNodeAnimation = make_shared<FSGLNodeAnimation>();
-                
+
                 convertedNodeAnimation->name = make_shared<string>(nodeAnimationName);
+
+                for (auto positionKeyframeIndex = 0; positionKeyframeIndex < nodeAnimation->mNumPositionKeys; positionKeyframeIndex++) {
+
+                    auto positionKeyframe = nodeAnimation->mPositionKeys[positionKeyframeIndex];
+
+                    auto convertedPositionKeyframe = make_shared<FSGLVectorKeyframe>();
+
+                    convertedPositionKeyframe->time = positionKeyframe.mTime;
+
+                    auto vector = positionKeyframe.mValue;
+
+                    float vectorX = vector.x;
+                    float vectorY = vector.y;
+                    float vectorZ = vector.z;
+
+                    auto convertedVector = make_shared<FSGLVector>(vectorX, vectorY, vectorZ);
+
+                    convertedPositionKeyframe->vector = convertedVector;
+
+                    convertedNodeAnimation->positions.push_back(convertedPositionKeyframe);
+                }
+
+                convertedAnimation->nodeAnimations.push_back(convertedNodeAnimation);
                 
             }
-            
+
             model->animations.push_back(convertedAnimation);
         }
     }
@@ -274,11 +297,11 @@ shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node) {
     for (auto childNodeIndex = 0; childNodeIndex < node->mNumChildren; childNodeIndex++) {
 
         auto childNode = node->mChildren[childNodeIndex];
-        
+
         auto convertedChildNode = FSGLModelLoaderAssimp::convertNode(childNode);
 
         convertedNode->childs.push_back(convertedChildNode);
-        
+
     }
 
     return convertedNode;

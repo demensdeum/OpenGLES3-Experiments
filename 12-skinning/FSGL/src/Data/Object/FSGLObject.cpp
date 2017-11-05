@@ -49,6 +49,22 @@ glm::mat4 FSGLObject::matrix() {
 
     matrix = glm::scale(matrix, glm::vec3(scaleVector->x, scaleVector->y, scaleVector->z));
 
+    auto positionVector = this->positionVector->copy();
+
+    if (model != nullptr && model->currentAnimation != nullptr) {
+        
+        auto currentAnimation = model->currentAnimation;
+
+        if (currentAnimation != nullptr) {
+
+            auto currentAnimationPositionVector = currentAnimation->positionVector();
+
+            positionVector->x += currentAnimationPositionVector->x;
+            positionVector->y += currentAnimationPositionVector->y;
+            positionVector->z += currentAnimationPositionVector->z;
+        }
+    }
+
     matrix = glm::translate(matrix, glm::vec3(positionVector->x, positionVector->y, positionVector->z));
 
     matrix = glm::rotate(matrix, rotationVector->x, glm::vec3(1.f, 0.f, 0.f));
@@ -75,7 +91,7 @@ shared_ptr<string> FSGLObject::serializeIntoString() {
 shared_ptr<FSGLSerializable> FSGLObject::deserializeFromString(shared_ptr<string> serializedData) {
 
     auto outputObject = make_shared<FSGLObject>();
-    
+
     string serializedDataString = *serializedData.get();
 
     cout << serializedDataString.c_str() << endl;
@@ -108,7 +124,7 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromString(shared_ptr<string
                 outputObject->scaleVector = static_pointer_cast<FSGLVector>(deserializedVector);
             }
                 break;
-                
+
             case FSGLObjectRotationVectorSerializationIndex:
             {
                 auto deserializedVector = FSGLVector().deserializeFromString(lineContainer);
@@ -121,8 +137,8 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromString(shared_ptr<string
                 auto deserializedVector = FSGLVector().deserializeFromString(lineContainer);
                 outputObject->positionVector = static_pointer_cast<FSGLVector>(deserializedVector);
             }
-                break;                
-                
+                break;
+
         }
     }
 
@@ -132,6 +148,20 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromString(shared_ptr<string
 shared_ptr<FSGLSerializable> FSGLObject::deserializeFromFile(shared_ptr<string> path) {
 
     return FSGLSerializable::deserializeFromFile(path);
+}
+
+void FSGLObject::playAnimation(shared_ptr<string> animationName, double animationOffset) {
+
+    cout << "FSGLObject playing animation: " << animationName->c_str() << endl;
+
+    model->playAnimation(animationName, animationOffset);
+
+}
+
+void FSGLObject::postRenderUpdate() {
+
+    model->incrementAnimation();
+
 }
 
 FSGLObject::~FSGLObject() {

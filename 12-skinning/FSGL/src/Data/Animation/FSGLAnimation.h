@@ -32,7 +32,13 @@ public:
     double duration;
     double ticksPerSecond;
     
+    double currentOffset;
+    
     vector< shared_ptr<FSGLNodeAnimation> >  nodeAnimations;
+    
+    void increment();
+    
+    shared_ptr<FSGLVector> positionVector();
     
 private:
 

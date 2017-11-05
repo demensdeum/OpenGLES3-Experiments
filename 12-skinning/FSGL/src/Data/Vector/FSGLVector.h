@@ -23,6 +23,8 @@ public:
     FSGLVector(const FSGLVector& orig);
     virtual ~FSGLVector();
     
+    shared_ptr<FSGLVector> copy();
+    
     float x;
     float y;
     float z;

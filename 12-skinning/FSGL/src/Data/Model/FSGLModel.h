@@ -53,9 +53,14 @@ public:
     virtual shared_ptr<string> serializeIntoString();
     virtual shared_ptr<FSGLSerializable> deserializeFromString(shared_ptr<string> serializedData);     
     
+    void playAnimation(shared_ptr<string> animationName, double animationOffset);
+    void incrementAnimation();
+    
+    shared_ptr<FSGLAnimation> currentAnimation;    
+    
 private:
     
-    
+
     
 };
 
