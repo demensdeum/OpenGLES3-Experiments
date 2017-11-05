@@ -21,6 +21,7 @@
 #include "../Mesh/FSGLMesh.h"
 #include "../Serializable/FSGLSerializable.h"
 #include "../Animation/FSGLAnimation.h"
+#include "../Node/FSGLNode.h"
 
 #if MSVC
 
@@ -47,6 +48,7 @@ public:
     
     vector< shared_ptr<FSGLAnimation> > animations;
     vector< shared_ptr<FSGLMesh> > meshes;  
+    shared_ptr<FSGLNode> rootNode;
     
     virtual shared_ptr<string> serializeIntoString();
     virtual shared_ptr<FSGLSerializable> deserializeFromString(shared_ptr<string> serializedData);     

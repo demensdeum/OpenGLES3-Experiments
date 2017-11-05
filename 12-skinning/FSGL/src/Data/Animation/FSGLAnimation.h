@@ -17,6 +17,8 @@
 #include <string>
 #include <memory>
 
+#include "../NodeAnimation/FSGLNodeAnimation.h"
+
 using namespace std;
 
 class FSGLAnimation {
@@ -26,6 +28,11 @@ public:
     virtual ~FSGLAnimation();
     
     shared_ptr<string> name;
+    
+    double duration;
+    double ticksPerSecond;
+    
+    vector< shared_ptr<FSGLNodeAnimation> >  nodeAnimations;
     
 private:
 

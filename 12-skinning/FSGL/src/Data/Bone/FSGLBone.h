@@ -17,6 +17,10 @@
 #include <string>
 #include <memory>
 
+#include "../VertexWeight/FSGLVertexWeight.h"
+
+#include <vector>
+
 using namespace std;
 
 class FSGLBone {
@@ -26,6 +30,8 @@ public:
     virtual ~FSGLBone();
     
     shared_ptr<string> name;
+    
+    vector<shared_ptr<FSGLVertexWeight> > vertexWeights;
     
 private:
 

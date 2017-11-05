@@ -19,8 +19,9 @@
 
 #include <string>
 #include <assimp/Importer.hpp>
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include "../../NodeAnimation/FSGLNodeAnimation.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
     auto model = make_shared<FSGLModel>();
 
     model->path = modelPath;
-    
+
     Assimp::Importer importer;
     auto scene = importer.ReadFile(modelPathString, aiProcessPreset_TargetRealtime_Fast);
 
@@ -53,9 +54,9 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
         for (unsigned int meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++) {
 
             auto mesh = scene->mMeshes[meshIndex];
-            
+
             auto convertedMesh = make_shared<FSGLMesh>();
-            
+
             model->meshes.push_back(convertedMesh);
 
             for (unsigned int vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
@@ -109,25 +110,38 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                 }
 
             }
-            
+
             if (mesh->HasBones()) {
-                
+
                 for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++) {
-                    
+
                     auto convertedBone = make_shared<FSGLBone>();
-                    
+
                     auto bone = mesh->mBones[boneIndex];
-                    
+
                     auto boneName = bone->mName.C_Str();
-                    
+
                     convertedBone->name = make_shared<string>(boneName);
-                    
+
                     convertedMesh->bones.push_back(convertedBone);
-                    
+
+                    for (int boneIndex = 0; boneIndex < bone->mNumWeights; boneIndex++) {
+
+                        auto weight = bone->mWeights[boneIndex];
+
+                        auto convertedWeight = make_shared<FSGLVertexWeight>();
+
+                        convertedWeight->vertexID = weight.mVertexId;
+                        convertedWeight->weight = weight.mWeight;
+
+                        convertedBone->vertexWeights.push_back(convertedWeight);
+
+                    }
+
                 }
-                
+
             }
-            
+
             convertedMesh->updateGlData();
 
         }
@@ -159,11 +173,11 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                 auto surface = SDL_LoadBMP(convertedMaterial->texturePath->c_str());
 
                 if (surface == nullptr) {
-                    
+
                     cout << "FSGLModelLoaderAssimp: cannot load texture: " << convertedMaterial->texturePath->c_str() << endl;
-                    
+
                 }
-                
+
                 auto surfaceLength = surface->w * surface->h * 3;
 
                 // swap bgr -> rgb
@@ -199,32 +213,75 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
             auto mesh = scene->mMeshes[meshIndex];
             auto convertedMesh = model->meshes[meshIndex];
-            
+
             auto materialIndex = mesh->mMaterialIndex;
 
             auto meshMaterial = rawMaterials[materialIndex];
 
             convertedMesh->material = meshMaterial;
-            
+
         }
 
     }
-    
+
     if (scene->HasAnimations()) {
-        
-        for (unsigned int animationIndex = 0; animationIndex < scene->mNumMeshes; animationIndex++) {
-        
+
+        for (unsigned int animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
+
             auto animation = scene->mAnimations[animationIndex];
-        
+
             auto animationName = animation->mName.C_Str();
-            
+
             auto convertedAnimation = make_shared<FSGLAnimation>();
+
             convertedAnimation->name = make_shared<string>(animationName);
+            convertedAnimation->duration = animation->mDuration;
+            convertedAnimation->ticksPerSecond = animation->mTicksPerSecond;
+
+            for (auto nodeAnimationIndex = 0; nodeAnimationIndex < animation->mNumChannels; nodeAnimationIndex++) {
+                
+                auto nodeAnimation = animation->mChannels[nodeAnimationIndex];
+                
+                auto nodeAnimationName = nodeAnimation->mNodeName.C_Str();
+                
+                auto convertedNodeAnimation = make_shared<FSGLNodeAnimation>();
+                
+                convertedNodeAnimation->name = make_shared<string>(nodeAnimationName);
+                
+            }
             
+            model->animations.push_back(convertedAnimation);
         }
     }
-    
+
+    auto rootNode = scene->mRootNode;
+
+    auto convertedRootNode = FSGLModelLoaderAssimp::convertNode(rootNode);
+
+    model->rootNode = convertedRootNode;
+
     return model;
+}
+
+shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node) {
+
+    auto convertedNode = make_shared<FSGLNode>();
+
+    auto convertedNodeName = node->mName.C_Str();
+
+    convertedNode->name = make_shared<string>(convertedNodeName);
+
+    for (auto childNodeIndex = 0; childNodeIndex < node->mNumChildren; childNodeIndex++) {
+
+        auto childNode = node->mChildren[childNodeIndex];
+        
+        auto convertedChildNode = FSGLModelLoaderAssimp::convertNode(childNode);
+
+        convertedNode->childs.push_back(convertedChildNode);
+        
+    }
+
+    return convertedNode;
 }
 
 FSGLModelLoaderAssimp::~FSGLModelLoaderAssimp() {

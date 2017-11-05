@@ -19,6 +19,8 @@
 
 #include "../FSGLModelLoader.h"
 
+#include <assimp/scene.h>
+
 #include <memory>
 
 using namespace std;
@@ -30,6 +32,10 @@ public:
     virtual ~FSGLModelLoaderAssimp();
     
     static shared_ptr<FSGLModel> loadModel(shared_ptr<string> modelPath);   
+    
+private:
+    
+    static shared_ptr<FSGLNode> convertNode(aiNode *node);
     
 };
 
