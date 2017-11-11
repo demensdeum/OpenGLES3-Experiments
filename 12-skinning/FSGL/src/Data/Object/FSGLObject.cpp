@@ -49,22 +49,6 @@ glm::mat4 FSGLObject::matrix() {
 
     matrix = glm::scale(matrix, glm::vec3(scaleVector->x, scaleVector->y, scaleVector->z));
 
-    auto positionVector = this->positionVector->copy();
-
-    if (model != nullptr && model->currentAnimation != nullptr) {
-        
-        auto currentAnimation = model->currentAnimation;
-
-        if (currentAnimation != nullptr) {
-
-            auto currentAnimationPositionVector = currentAnimation->positionVector();
-
-            positionVector->x += currentAnimationPositionVector->x;
-            positionVector->y += currentAnimationPositionVector->y;
-            positionVector->z += currentAnimationPositionVector->z;
-        }
-    }
-
     matrix = glm::translate(matrix, glm::vec3(positionVector->x, positionVector->y, positionVector->z));
 
     matrix = glm::rotate(matrix, rotationVector->x, glm::vec3(1.f, 0.f, 0.f));

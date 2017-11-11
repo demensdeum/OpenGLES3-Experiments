@@ -51,6 +51,21 @@ shared_ptr<FSGLSerializable> FSGLModel::deserializeFromString(shared_ptr<string>
     return object;
 }
 
+shared_ptr<FSGLVector> FSGLModel::currentAnimationPositionVectorForMesh(shared_ptr<FSGLMesh> mesh) {
+    
+    if (currentAnimation == nullptr) {
+        
+        return shared_ptr<FSGLVector>();
+        
+    }
+    
+    auto nodeAnimation = currentAnimation->nodeAnimations[0]; // only one node right now
+    
+    auto positionVector = nodeAnimation->positions[currentAnimation->currentOffset];
+    
+    return positionVector->vector;
+}
+
 void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {
     
     if (currentAnimation != nullptr && currentAnimation->name->compare(animationName->c_str())== 0) {

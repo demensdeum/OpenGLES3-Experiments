@@ -30,15 +30,6 @@ void FSGLAnimation::increment() {
     }
 }
 
-shared_ptr<FSGLVector> FSGLAnimation::positionVector() {
-    
-    auto nodeAnimation = nodeAnimations[0]; // ?
-    
-    auto positionVectorKeyframe = nodeAnimation->positions[currentOffset];
-    
-    return positionVectorKeyframe->vector;
-}
-
 FSGLAnimation::~FSGLAnimation() {
 }
 

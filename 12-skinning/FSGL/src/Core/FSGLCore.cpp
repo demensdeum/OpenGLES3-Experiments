@@ -34,11 +34,20 @@ static const GLchar* vertexShaderSource =
         "uniform mat4 projectionMatrix;\n"
         "uniform mat4 viewMatrix;\n"
         "uniform mat4 modelMatrix;\n"
+
         "attribute vec4 vertex;\n"
         "attribute vec2 uvIn;\n"
+
+        "attribute vec4 animationTransformRowOne;\n"
+        "attribute vec4 animationTransformRowTwo;\n"
+        "attribute vec4 animationTransformRowThree;\n"
+        "attribute vec4 animationTransformRowFour;\n"
+
         "varying vec2 uvOut;\n"
         "void main() {\n"
-        "   gl_Position = projectionMatrix * viewMatrix * modelMatrix * vertex;\n"
+        "   mat4 animationTransform = mat4(animationTransformRowOne, animationTransformRowTwo,animationTransformRowThree, animationTransformRowFour);\n"
+        "   vec4 vertexPosition = vertex * animationTransform;\n"
+        "   gl_Position = projectionMatrix * viewMatrix * modelMatrix * vertexPosition;\n"
         "   uvOut = uvIn;\n"
         "}\n";
 
@@ -247,6 +256,8 @@ void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
 
         auto mesh = model->meshes[meshIndex];
 
+        mesh->updateGlAnimationTransformation();
+        
         auto vertices = mesh->glVertices;
         auto indices = mesh->glIndices;
 
@@ -293,7 +304,23 @@ void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
         GLint uvSlot = glGetAttribLocation(shader_program, "uvIn");
         glVertexAttribPointer(uvSlot, 2, GL_FLOAT, GL_FALSE, FSGLMesh::glVertexSize, (GLvoid*) (sizeof (GLfloat) * 3));
         glEnableVertexAttribArray(uvSlot);
-
+        
+        GLint animationTransformRowOneSlot = glGetAttribLocation(shader_program, "animationTransformRowOne");
+        glVertexAttribPointer(animationTransformRowOneSlot, 4, GL_FLOAT, GL_FALSE, FSGLMesh::glVertexSize, (GLvoid*) (sizeof (GLfloat) * 5));
+        glEnableVertexAttribArray(animationTransformRowOneSlot);
+        
+        GLint animationTransformRowTwoSlot = glGetAttribLocation(shader_program, "animationTransformRowTwo");
+        glVertexAttribPointer(animationTransformRowTwoSlot, 4, GL_FLOAT, GL_FALSE, FSGLMesh::glVertexSize, (GLvoid*) (sizeof (GLfloat) * 9));
+        glEnableVertexAttribArray(animationTransformRowTwoSlot);
+        
+        GLint animationTransformRowThreeSlot = glGetAttribLocation(shader_program, "animationTransformRowThree");
+        glVertexAttribPointer(animationTransformRowThreeSlot, 4, GL_FLOAT, GL_FALSE, FSGLMesh::glVertexSize, (GLvoid*) (sizeof (GLfloat) * 13));
+        glEnableVertexAttribArray(animationTransformRowThreeSlot);        
+        
+        GLint animationTransformRowFourSlot = glGetAttribLocation(shader_program, "animationTransformRowFour");
+        glVertexAttribPointer(animationTransformRowFourSlot, 4, GL_FLOAT, GL_FALSE, FSGLMesh::glVertexSize, (GLvoid*) (sizeof (GLfloat) * 17));
+        glEnableVertexAttribArray(animationTransformRowFourSlot);        
+        
         GLint modelMatrixUniform;
         GLint viewMatrixUniform;
 

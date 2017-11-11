@@ -38,8 +38,6 @@ public:
     
     void increment();
     
-    shared_ptr<FSGLVector> positionVector();
-    
 private:
 
 };

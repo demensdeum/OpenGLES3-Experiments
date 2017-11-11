@@ -57,8 +57,6 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
             auto convertedMesh = make_shared<FSGLMesh>();
 
-            model->meshes.push_back(convertedMesh);
-
             for (unsigned int vertexIndex = 0; vertexIndex < mesh->mNumVertices; vertexIndex++) {
 
                 auto vertex = mesh->mVertices[vertexIndex];
@@ -84,8 +82,34 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                 convertedMesh->vertices.push_back(u);
                 convertedMesh->vertices.push_back(v);
+                
+                // unit matrix
+                
+                convertedMesh->vertices.push_back(1);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(1);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(1);
+                convertedMesh->vertices.push_back(0);
+                
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(0);
+                convertedMesh->vertices.push_back(1);
 
             }
+            
+            convertedMesh->parentModel = model;
+            
+            model->meshes.push_back(convertedMesh);
 
             if (mesh->HasFaces()) {
 
@@ -288,6 +312,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
 shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node) {
 
+    // model->node<->animation.nodeAnimation.name<->meshes<->vertices
+    
     auto convertedNode = make_shared<FSGLNode>();
 
     auto convertedNodeName = node->mName.C_Str();

@@ -28,10 +28,14 @@
 
 #include "../Material/FSGLMaterial.h"
 #include "../Bone/FSGLBone.h"
+#include <glm/glm.hpp>
+#include "../Vector/FSGLVector.h"
+
+class FSGLModel;
 
 using namespace std;
 
-class FSGLMesh {
+class FSGLMesh: public std::enable_shared_from_this<FSGLMesh> {
 public:
     FSGLMesh();
     FSGLMesh(const FSGLMesh& orig);
@@ -47,17 +51,24 @@ public:
     GLsizeiptr glIndicesBufferSize = 0;
     GLsizei glIndicesCount = 0;
 
-    static const int glVertexCount = 5;
+    // x, y, z, u, v, mat4
+    
+    static const int glVertexCount = 5 + 16;
     static const GLsizei glVertexSize = sizeof(GLfloat) * glVertexCount;
     
     void updateGlData();
+    void updateGlAnimationTransformation();
     
     shared_ptr<FSGLMaterial> material;
     
     vector< shared_ptr <FSGLBone> > bones;
     
+    shared_ptr<FSGLModel> parentModel;
+    
 private:
 
+    shared_ptr<FSGLVector> currentAnimationPositionVector();
+    
 };
 
 #endif /* FSGLMESH_H */

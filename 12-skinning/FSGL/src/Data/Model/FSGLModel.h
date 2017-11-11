@@ -58,6 +58,8 @@ public:
     
     shared_ptr<FSGLAnimation> currentAnimation;    
     
+    shared_ptr<FSGLVector> currentAnimationPositionVectorForMesh(shared_ptr<FSGLMesh> mesh);
+    
 private:
     
 
