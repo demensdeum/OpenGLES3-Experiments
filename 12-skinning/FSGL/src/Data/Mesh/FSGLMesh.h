@@ -30,6 +30,7 @@
 #include "../Bone/FSGLBone.h"
 #include <glm/glm.hpp>
 #include "../Vector/FSGLVector.h"
+#include "../Quaternion/FSGLQuaternion.h"
 
 class FSGLModel;
 
@@ -68,6 +69,7 @@ public:
 private:
 
     shared_ptr<FSGLVector> currentAnimationPositionVector();
+    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternion();
     
 };
 

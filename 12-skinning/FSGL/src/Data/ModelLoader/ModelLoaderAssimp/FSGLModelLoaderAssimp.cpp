@@ -292,6 +292,26 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                     convertedNodeAnimation->positions.push_back(convertedPositionKeyframe);
                 }
+                
+                for (auto rotationKeyframeIndex = 0; rotationKeyframeIndex < nodeAnimation->mNumRotationKeys; rotationKeyframeIndex++) {
+                    
+                    auto rotationKeyframe = nodeAnimation->mRotationKeys[rotationKeyframeIndex];
+                    
+                    auto convertedRotationKeyframe = make_shared<FSGLQuaternionKeyframe>();
+                    
+                    auto quaternion = rotationKeyframe.mValue;
+                    
+                    auto convertedQuaternion = make_shared<FSGLQuaternion>();
+                    
+                    convertedQuaternion->x = quaternion.x;
+                    convertedQuaternion->y = quaternion.y;
+                    convertedQuaternion->z = quaternion.z;
+                    convertedQuaternion->w = quaternion.w;
+                    
+                    convertedRotationKeyframe->quaternion = convertedQuaternion;
+                    
+                    convertedNodeAnimation->rotations.push_back(convertedRotationKeyframe);
+                }
 
                 convertedAnimation->nodeAnimations.push_back(convertedNodeAnimation);
                 

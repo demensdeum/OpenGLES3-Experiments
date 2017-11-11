@@ -66,6 +66,21 @@ shared_ptr<FSGLVector> FSGLModel::currentAnimationPositionVectorForMesh(shared_p
     return positionVector->vector;
 }
 
+shared_ptr<FSGLQuaternion> FSGLModel::currentAnimationRotationQuaternionForMesh(shared_ptr<FSGLMesh> mesh) {
+    
+    if (currentAnimation == nullptr) {
+        
+        return shared_ptr<FSGLQuaternion>();
+        
+    }
+    
+    auto nodeAnimation = currentAnimation->nodeAnimations[0]; // only one node right now
+    
+    auto rotationQuaternion = nodeAnimation->rotations[currentAnimation->currentOffset];
+    
+    return rotationQuaternion->quaternion;
+}
+
 void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {
     
     if (currentAnimation != nullptr && currentAnimation->name->compare(animationName->c_str())== 0) {
