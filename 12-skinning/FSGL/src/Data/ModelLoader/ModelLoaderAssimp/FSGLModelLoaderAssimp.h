@@ -35,7 +35,7 @@ public:
     
 private:
     
-    static shared_ptr<FSGLNode> convertNode(aiNode *node);
+    static shared_ptr<FSGLNode> convertNode(aiNode *node, shared_ptr<FSGLNode> parentNode, shared_ptr<FSGLModel> model);
     
 };
 

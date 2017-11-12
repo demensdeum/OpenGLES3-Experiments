@@ -14,6 +14,9 @@
 #include "FSGLAnimation.h"
 
 FSGLAnimation::FSGLAnimation() {
+    
+    currentOffset = 0;
+    
 }
 
 FSGLAnimation::FSGLAnimation(const FSGLAnimation& orig) {

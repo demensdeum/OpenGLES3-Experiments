@@ -32,6 +32,9 @@
 #include "../Vector/FSGLVector.h"
 #include "../Quaternion/FSGLQuaternion.h"
 
+#include "../NodeAnimation/FSGLNodeAnimation.h"
+#include "../Matrix/FSGLMatrix.h"
+
 class FSGLModel;
 
 using namespace std;
@@ -66,10 +69,14 @@ public:
     
     shared_ptr<FSGLModel> parentModel;
     
+    shared_ptr<FSGLBone> findBone(shared_ptr<string> boneName);
+    
+    void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrixx);
+    
 private:
 
-    shared_ptr<FSGLVector> currentAnimationPositionVector();
-    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternion();
+    shared_ptr<FSGLVector> currentAnimationPositionVectorForVertexIndex(int vertexIndex);
+    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternionForVertexIndex(int vertexIndex);
     
 };
 

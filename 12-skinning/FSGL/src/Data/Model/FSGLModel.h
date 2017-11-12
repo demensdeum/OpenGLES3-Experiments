@@ -58,8 +58,10 @@ public:
     
     shared_ptr<FSGLAnimation> currentAnimation;    
     
-    shared_ptr<FSGLVector> currentAnimationPositionVectorForMesh(shared_ptr<FSGLMesh> mesh);
-    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternionForMesh(shared_ptr<FSGLMesh> mesh);
+    shared_ptr<FSGLVector> currentAnimationPositionVectorForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex);
+    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternionForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex);
+    
+    shared_ptr<FSGLBone> findBone(shared_ptr<string> boneName);
     
 private:
     

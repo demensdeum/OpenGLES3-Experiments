@@ -51,34 +51,34 @@ shared_ptr<FSGLSerializable> FSGLModel::deserializeFromString(shared_ptr<string>
     return object;
 }
 
-shared_ptr<FSGLVector> FSGLModel::currentAnimationPositionVectorForMesh(shared_ptr<FSGLMesh> mesh) {
+shared_ptr<FSGLVector> FSGLModel::currentAnimationPositionVectorForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex) {
     
-    if (currentAnimation == nullptr) {
-        
-        return shared_ptr<FSGLVector>();
-        
-    }
-    
-    auto nodeAnimation = currentAnimation->nodeAnimations[0]; // only one node right now
-    
-    auto positionVector = nodeAnimation->positions[currentAnimation->currentOffset];
-    
-    return positionVector->vector;
+    return shared_ptr<FSGLVector>();
+
 }
 
-shared_ptr<FSGLQuaternion> FSGLModel::currentAnimationRotationQuaternionForMesh(shared_ptr<FSGLMesh> mesh) {
+shared_ptr<FSGLQuaternion> FSGLModel::currentAnimationRotationQuaternionForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex) {
+
+    return shared_ptr<FSGLQuaternion>();
+
+}
+
+shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
     
-    if (currentAnimation == nullptr) {
+    for (auto mesh : meshes) {
         
-        return shared_ptr<FSGLQuaternion>();
+        auto foundBone = mesh->findBone(boneName);
+        
+        if (foundBone.get() != nullptr) {
+            
+            return foundBone;
+            
+        }
         
     }
     
-    auto nodeAnimation = currentAnimation->nodeAnimations[0]; // only one node right now
+    return shared_ptr<FSGLBone>();
     
-    auto rotationQuaternion = nodeAnimation->rotations[currentAnimation->currentOffset];
-    
-    return rotationQuaternion->quaternion;
 }
 
 void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {

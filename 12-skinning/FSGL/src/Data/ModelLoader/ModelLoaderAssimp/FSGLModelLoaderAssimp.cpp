@@ -147,6 +147,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                     convertedBone->name = make_shared<string>(boneName);
 
+                    convertedBone->mesh = convertedMesh;
+                    
                     for (int boneIndex = 0; boneIndex < bone->mNumWeights; boneIndex++) {
 
                         auto weight = bone->mWeights[boneIndex];
@@ -248,6 +250,12 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
     }
 
+    auto rootNode = scene->mRootNode;
+
+    auto convertedRootNode = FSGLModelLoaderAssimp::convertNode(rootNode, nullptr, model);
+
+    model->rootNode = convertedRootNode;    
+    
     if (scene->HasAnimations()) {
 
         for (unsigned int animationIndex = 0; animationIndex < scene->mNumAnimations; animationIndex++) {
@@ -271,6 +279,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                 auto convertedNodeAnimation = make_shared<FSGLNodeAnimation>();
 
                 convertedNodeAnimation->name = make_shared<string>(nodeAnimationName);
+                
+                convertedNodeAnimation->node = convertedRootNode->findNode(convertedNodeAnimation->name);
 
                 for (auto positionKeyframeIndex = 0; positionKeyframeIndex < nodeAnimation->mNumPositionKeys; positionKeyframeIndex++) {
 
@@ -321,16 +331,10 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
         }
     }
 
-    auto rootNode = scene->mRootNode;
-
-    auto convertedRootNode = FSGLModelLoaderAssimp::convertNode(rootNode);
-
-    model->rootNode = convertedRootNode;
-
     return model;
 }
 
-shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node) {
+shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node, shared_ptr<FSGLNode> parentNode, shared_ptr<FSGLModel> model) {
 
     // model->node<->animation.nodeAnimation.name<->meshes<->vertices
     
@@ -339,12 +343,26 @@ shared_ptr<FSGLNode> FSGLModelLoaderAssimp::convertNode(aiNode* node) {
     auto convertedNodeName = node->mName.C_Str();
 
     convertedNode->name = make_shared<string>(convertedNodeName);
+    
+    convertedNode->parent = parentNode;
+    
+    convertedNode->bone = model->findBone(convertedNode->name);
 
+    for (auto meshIndex = 0; meshIndex < node->mNumMeshes; meshIndex++) {
+        
+        auto meshSceneIndex = node->mMeshes[meshIndex];
+        
+        auto mesh = model->meshes[meshSceneIndex];
+        
+        convertedNode->meshes.push_back(mesh);
+        
+    }
+    
     for (auto childNodeIndex = 0; childNodeIndex < node->mNumChildren; childNodeIndex++) {
 
         auto childNode = node->mChildren[childNodeIndex];
 
-        auto convertedChildNode = FSGLModelLoaderAssimp::convertNode(childNode);
+        auto convertedChildNode = FSGLModelLoaderAssimp::convertNode(childNode, convertedNode, model);
 
         convertedNode->childs.push_back(convertedChildNode);
 

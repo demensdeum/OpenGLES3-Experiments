@@ -134,6 +134,24 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromFile(shared_ptr<string> 
     return FSGLSerializable::deserializeFromFile(path);
 }
 
+void FSGLObject::updateAnimationTransformations() {
+    
+    auto currentAnimation = model->currentAnimation;
+    
+    auto transformationMatrix = make_shared<FSGLMatrix>();
+    
+    for (auto nodeAnimation : currentAnimation->nodeAnimations) {
+        
+        auto node = nodeAnimation->node;
+        
+        if (node.get() != nullptr) {
+        
+            node->applyAnimationTransformations(nodeAnimation, transformationMatrix);
+       
+        }
+    }
+}
+
 void FSGLObject::playAnimation(shared_ptr<string> animationName, double animationOffset) {
 
     cout << "FSGLObject playing animation: " << animationName->c_str() << endl;

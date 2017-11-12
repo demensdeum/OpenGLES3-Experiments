@@ -18,8 +18,13 @@
 #include <memory>
 
 #include "../VertexWeight/FSGLVertexWeight.h"
+#include "../Matrix/FSGLMatrix.h"
+
+#include "../NodeAnimation/FSGLNodeAnimation.h"
 
 #include <vector>
+
+class FSGLMesh;
 
 using namespace std;
 
@@ -32,6 +37,13 @@ public:
     shared_ptr<string> name;
     
     vector<shared_ptr<FSGLVertexWeight> > vertexWeights;
+    
+    shared_ptr<FSGLMatrix> offsetMatrix;
+    shared_ptr<FSGLMatrix> transformationMatrix;
+    
+    void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix);
+    
+    shared_ptr<FSGLMesh> mesh;
     
 private:
 

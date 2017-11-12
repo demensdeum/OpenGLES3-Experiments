@@ -21,6 +21,8 @@
 
 #include "../Serializable/FSGLSerializable.h"
 
+#include "../Matrix/FSGLMatrix.h"
+
 #include <memory>
 
 using namespace std;
@@ -46,6 +48,8 @@ public:
     virtual shared_ptr<FSGLSerializable> deserializeFromString(shared_ptr<string> serializedData);
 
     virtual shared_ptr<FSGLSerializable> deserializeFromFile(shared_ptr<string> path);
+    
+    void updateAnimationTransformations();
     
     void playAnimation(shared_ptr<string> animationName, double animationOffset);
     

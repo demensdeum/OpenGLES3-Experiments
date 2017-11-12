@@ -21,6 +21,8 @@
 #include "../VectorKeyframe/FSGLVectorKeyframe.h"
 #include "../QuaternionKeyframe/FSGLQuaternionKeyframe.h"
 
+class FSGLNode;
+
 using namespace std;
 
 class FSGLNodeAnimation {
@@ -34,6 +36,8 @@ public:
     vector <shared_ptr<FSGLVectorKeyframe> > positions;
     vector <shared_ptr<FSGLQuaternionKeyframe> > rotations;
     vector <shared_ptr<FSGLVectorKeyframe> > scalings;
+    
+    shared_ptr<FSGLNode> node;
     
 private:
 

@@ -13,10 +13,26 @@
 
 #include "FSGLBone.h"
 
+#include <iostream>
+
+#include "../Mesh/FSGLMesh.h"
+
 FSGLBone::FSGLBone() {
 }
 
 FSGLBone::FSGLBone(const FSGLBone& orig) {
+}
+
+void FSGLBone::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix) {
+    
+    cout << "applyAnimationTransformations for bone: " << name->c_str() << endl;
+    
+    if (mesh != nullptr) {
+        
+        mesh->applyAnimationTransformations(nodeAnimation, transformationMatrix);
+        
+    }
+    
 }
 
 FSGLBone::~FSGLBone() {

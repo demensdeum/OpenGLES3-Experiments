@@ -21,10 +21,13 @@
 #include <glm/glm.hpp>
 
 #include "../NodeAnimation/FSGLNodeAnimation.h"
+#include "../Mesh/FSGLMesh.h"
+
+#include "../Matrix/FSGLMatrix.h"
 
 using namespace std;
 
-class FSGLNode {
+class FSGLNode: public enable_shared_from_this<FSGLNode> {
 public:
     FSGLNode();
     FSGLNode(const FSGLNode& orig);
@@ -35,9 +38,15 @@ public:
     shared_ptr<FSGLNode> parent;
     vector < shared_ptr<FSGLNode> > childs;
     
-    vector<FSGLNodeAnimation> nodeAnimations;
+    vector< shared_ptr<FSGLMesh> > meshes;
+    
+    shared_ptr<FSGLBone> bone;
     
     glm::mat4 matrix;
+    
+    void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix);
+    
+    shared_ptr<FSGLNode> findNode(shared_ptr<string> nodeName);
     
 private:
 
