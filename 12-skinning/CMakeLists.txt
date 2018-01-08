@@ -12,6 +12,8 @@ file(GLOB_RECURSE SOURCE_FILES
     "FSGL/*.cpp"
 )
 
+set(CMAKE_BUILD_TYPE Debug)
+
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 if(MSVC)
@@ -20,6 +22,7 @@ if(MSVC)
  
 else(MSVC)
 
- target_link_libraries(${PROJECT_NAME} SDL2 GLESv2 assimp)
+ target_link_libraries(${PROJECT_NAME} SDL2 GL assimp)
+#target_link_libraries(${PROJECT_NAME} SDL2 GLESv2 assimp)
 
 endif(MSVC)

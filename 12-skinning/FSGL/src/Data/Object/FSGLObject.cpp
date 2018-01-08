@@ -138,6 +138,12 @@ void FSGLObject::updateAnimationTransformations() {
     
     auto currentAnimation = model->currentAnimation;
     
+	if (currentAnimation.get() == nullptr) {
+
+		return;
+
+	}
+
     auto transformationMatrix = make_shared<FSGLMatrix>();
     
     for (auto nodeAnimation : currentAnimation->nodeAnimations) {
@@ -161,6 +167,14 @@ void FSGLObject::playAnimation(shared_ptr<string> animationName, double animatio
 }
 
 void FSGLObject::postRenderUpdate() {
+
+    auto currentAnimation = model->currentAnimation;
+    
+	if (currentAnimation.get() == nullptr) {
+
+		return;
+
+	}
 
     model->incrementAnimation();
 
