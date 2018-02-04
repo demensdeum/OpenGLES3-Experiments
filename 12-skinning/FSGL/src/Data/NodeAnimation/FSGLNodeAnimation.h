@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+#include "../Matrix/FSGLMatrix.h"
 #include "../VectorKeyframe/FSGLVectorKeyframe.h"
 #include "../QuaternionKeyframe/FSGLQuaternionKeyframe.h"
 
@@ -39,6 +40,8 @@ public:
     
     shared_ptr<FSGLNode> node;
     
+	shared_ptr<FSGLMatrix> transformationMatrix();
+
 private:
 
 };

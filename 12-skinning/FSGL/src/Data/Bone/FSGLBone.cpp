@@ -35,6 +35,12 @@ void FSGLBone::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeA
     
 }
 
+shared_ptr<FSGLMatrix> FSGLBone::transformationMatrix() {
+
+	return node->transformationMatrix();
+
+}
+
 FSGLBone::~FSGLBone() {
 }
 

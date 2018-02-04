@@ -26,6 +26,7 @@
 
 #endif
 
+#include "../Vertex/FSGLVertex.h"
 #include "../Material/FSGLMaterial.h"
 #include "../Bone/FSGLBone.h"
 #include <glm/glm.hpp>
@@ -36,6 +37,7 @@
 #include "../Matrix/FSGLMatrix.h"
 
 class FSGLModel;
+class FSGLVertex;
 
 using namespace std;
 
@@ -45,6 +47,8 @@ public:
     FSGLMesh(const FSGLMesh& orig);
     virtual ~FSGLMesh();
     
+	vector<shared_ptr<FSGLVertex> > verticesObjects;
+
     vector<GLfloat> vertices;
     vector<GLushort> indices;
     

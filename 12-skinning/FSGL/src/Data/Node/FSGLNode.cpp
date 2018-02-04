@@ -38,6 +38,13 @@ void FSGLNode::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeA
     }    
 }
 
+shared_ptr<FSGLMatrix> FSGLNode::transformationMatrix() {
+
+	return nodeAnimation->transformationMatrix();
+
+}
+
+
 shared_ptr<FSGLNode> FSGLNode::findNode(shared_ptr<string> nodeName) {
     
     if (name->compare(nodeName->c_str()) == 0) { 

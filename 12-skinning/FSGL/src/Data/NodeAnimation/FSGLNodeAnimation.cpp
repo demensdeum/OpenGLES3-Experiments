@@ -22,3 +22,8 @@ FSGLNodeAnimation::FSGLNodeAnimation(const FSGLNodeAnimation& orig) {
 FSGLNodeAnimation::~FSGLNodeAnimation() {
 }
 
+shared_ptr<FSGLMatrix> FSGLNodeAnimation::transformationMatrix() {
+
+	
+
+}

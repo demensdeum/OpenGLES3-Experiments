@@ -20,6 +20,7 @@
 #include "../FSGLModelLoader.h"
 
 #include <assimp/scene.h>
+#include "../../Vertex/FSGLVertex.h"
 
 #include <memory>
 

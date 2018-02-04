@@ -76,6 +76,10 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                     v = 1 - uv.y;
                 }
 
+		auto convertedVertex = make_shared<FSGLVertex>(x, y, z, u, v);
+
+		convertedMesh->verticesObjects.push_back(convertedVertex);
+
                 convertedMesh->vertices.push_back(x);
                 convertedMesh->vertices.push_back(y);
                 convertedMesh->vertices.push_back(z);

@@ -43,6 +43,8 @@ shared_ptr<FSGLQuaternion> FSGLMesh::currentAnimationRotationQuaternionForVertex
 
 void FSGLMesh::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrixx) {
 
+	return;
+
     auto animationOffset = parentModel->currentAnimation->currentOffset;
 
     if (animationOffset >= nodeAnimation->positions.size()) {
@@ -141,12 +143,16 @@ void FSGLMesh::updateGlData() {
 
     for (unsigned int i = 0; i < vertices.size(); i += glVertexCount) {
 
-        glVertices[i] = vertices[i]; // x
-        glVertices[i + 1] = vertices[i + 1]; // y
-        glVertices[i + 2] = vertices[i + 2]; // z
+	auto vertexObject = verticesObjects[i / glVertexCount];
+	
+	vertexObject->updateAnimatedPosition();
 
-        glVertices[i + 3] = vertices[i + 3]; // u
-        glVertices[i + 4] = vertices[i + 4]; // v
+        glVertices[i] = vertexObject->animatedPosition->x; // x
+        glVertices[i + 1] = vertexObject->animatedPosition->y; // y
+        glVertices[i + 2] = vertexObject->animatedPosition->z; // z
+
+        glVertices[i + 3] = vertexObject->uvTextureCoordinates->u; // u
+        glVertices[i + 4] = vertexObject->uvTextureCoordinates->v; // v
 
         // mat4
 

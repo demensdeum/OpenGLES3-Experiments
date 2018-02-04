@@ -25,6 +25,8 @@
 
 #include "../Matrix/FSGLMatrix.h"
 
+class FSGLMesh;
+
 using namespace std;
 
 class FSGLNode: public enable_shared_from_this<FSGLNode> {
@@ -48,6 +50,10 @@ public:
     
     shared_ptr<FSGLNode> findNode(shared_ptr<string> nodeName);
     
+	shared_ptr<FSGLNodeAnimation> nodeAnimation;
+
+	shared_ptr<FSGLMatrix> transformationMatrix();
+
 private:
 
 };

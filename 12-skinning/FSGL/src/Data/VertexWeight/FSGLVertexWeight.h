@@ -14,6 +14,12 @@
 #ifndef FSGLVERTEXWEIGHT_H
 #define FSGLVERTEXWEIGHT_H
 
+#include "../Bone/FSGLBone.h"
+
+class FSGLBone;
+class FSGLMatrix;
+
+using namespace std;
 
 class FSGLVertexWeight {
 public:
@@ -24,6 +30,10 @@ public:
     int vertexID;
     float weight;
     
+	shared_ptr<FSGLBone> bone;
+
+	shared_ptr<FSGLMatrix> transformationMatrix();
+
 private:
 
 };
