@@ -79,9 +79,12 @@ void FSGLMesh::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeA
 
     auto rotationMatrix = glm::mat4_cast(rotation);
 
+    // scale
+    auto scaleVector = nodeAnimation->scalings[animationOffset]->vector;
     auto transformationMatrix = glm::mat4(1.0);
 
     transformationMatrix = glm::translate(transformationMatrix, glm::vec3(positionVector->x, positionVector->y, positionVector->z));
+    transformationMatrix = glm::scale(transformationMatrix, glm::vec3(scaleVector->x, scaleVector->y, scaleVector->z));
     transformationMatrix = transformationMatrix * rotationMatrix;
 
     for (unsigned int i = 0; i < vertices.size(); i += glVertexCount) {

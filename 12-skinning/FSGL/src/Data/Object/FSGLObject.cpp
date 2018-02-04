@@ -47,7 +47,7 @@ glm::mat4 FSGLObject::matrix() {
 
     glm::mat4 matrix;
 
-    matrix = glm::scale(matrix, glm::vec3(scaleVector->x, scaleVector->y, scaleVector->z));
+    glm::scale(matrix, glm::vec3(scaleVector->x, scaleVector->y, scaleVector->z));
 
     matrix = glm::translate(matrix, glm::vec3(positionVector->x, positionVector->y, positionVector->z));
 

@@ -323,6 +323,25 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                     convertedNodeAnimation->rotations.push_back(convertedRotationKeyframe);
                 }
 
+                for (auto scalingKeyframeIndex = 0; scalingKeyframeIndex < nodeAnimation->mNumScalingKeys; scalingKeyframeIndex++) {
+                    
+                    auto scalingKeyframe = nodeAnimation->mScalingKeys[scalingKeyframeIndex];
+                    
+                    auto convertedScalingKeyframe = make_shared<FSGLVectorKeyframe>();
+                    
+                    auto vector = scalingKeyframe.mValue;
+
+                    float vectorX = vector.x;
+                    float vectorY = vector.y;
+                    float vectorZ = vector.z;
+                    
+                    auto convertedVector = make_shared<FSGLVector>(vectorX, vectorY, vectorZ);
+
+                    convertedScalingKeyframe->vector = convertedVector;
+                    
+                    convertedNodeAnimation->scalings.push_back(convertedScalingKeyframe);
+                }
+
                 convertedAnimation->nodeAnimations.push_back(convertedNodeAnimation);
                 
             }
