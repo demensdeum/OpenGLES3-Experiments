@@ -20,6 +20,7 @@ if(MSVC)
  
 else(MSVC)
 
- target_link_libraries(${PROJECT_NAME} SDL2 GLESv2 assimp)
+#target_link_libraries(${PROJECT_NAME} SDL2 GLESv2 assimp)
+target_link_libraries(${PROJECT_NAME} SDL2 GL assimp)
 
 endif(MSVC)

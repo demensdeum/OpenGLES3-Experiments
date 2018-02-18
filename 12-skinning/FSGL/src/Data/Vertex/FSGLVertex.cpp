@@ -28,9 +28,11 @@ void FSGLVertex::applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> tran
 
 	cout << "apply transformation matrix with weight" << endl;
 
-	if (transformMatrix.get() == nullptr)
+	if (transformationMatrix.get() == nullptr)
 {
-	cout << "transformMatrix = nullptr" << endl;
+	cout << "FSGLVertex::applyTransformationMatrixWithWeight - transformationMatrix = nullptr" << endl;
+
+	exit(3);
 }
 
 	this->transformMatrix = transformationMatrix;

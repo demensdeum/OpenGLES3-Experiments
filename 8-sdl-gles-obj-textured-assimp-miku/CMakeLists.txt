@@ -14,4 +14,5 @@ file(GLOB_RECURSE SOURCE_FILES
 
 add_executable(SDLGlesObj ${SOURCE_FILES})
 
-target_link_libraries(SDLGlesObj SDL2 GLESv2 assimp)
+#target_link_libraries(SDLGlesObj SDL2 GLESv2 assimp)
+target_link_libraries(SDLGlesObj SDL2 GL assimp)

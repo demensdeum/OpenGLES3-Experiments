@@ -29,6 +29,13 @@ void FSGLBone::applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMa
     
 	cout << "bone child vertexWeights count: " << vertexWeights.size() << endl;
     
+	if (transformationMatrix.get() == nullptr)
+{
+	cout << "FSGLBone::applyTransformationMatrix transformationMatrix - nullptr" << endl;
+
+	exit(2);
+}
+
 	for (auto vertexWeight : vertexWeights) {
 
 		cout << "vertex weight " << vertexWeight->vertex << endl;

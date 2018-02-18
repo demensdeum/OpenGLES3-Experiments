@@ -135,7 +135,9 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromFile(shared_ptr<string> 
 }
 
 void FSGLObject::updateAnimationTransformations() {
-    
+
+	cout << "FSGLObject - Updating animation transformations" << endl;
+
     auto currentAnimation = model->currentAnimation;
     
 	if (currentAnimation.get() == nullptr) {
@@ -150,8 +152,18 @@ void FSGLObject::updateAnimationTransformations() {
 
 	 auto transformationMatrix = nodeAnimation->transformationMatrix();
         
+	if (transformationMatrix.get() == nullptr) {
+
+		cout << "FSGLObject::updateAnimationTransformations - transformationMatrix - nullptr" << endl;
+
+	}
+
+	cout << "FSGLObject - There is animation node and transformationMatrix" << endl;
+
         if (node.get() != nullptr) {
         
+	cout << "FSGLObject - Applying transformation matrix to node" << endl;
+
             node->applyTransformationMatrix(transformationMatrix);
        
         }

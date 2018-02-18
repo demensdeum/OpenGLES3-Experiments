@@ -34,14 +34,18 @@ int main(int argc, char** argv) {
 
     controller->addObject(object);
 
-    auto animationName = make_shared<string>("Cube|Cube");
+    auto animationName = make_shared<string>("Armature|ArmatureAction");
 
-	for (auto frameIndex = 0; frameIndex < 39; frameIndex++)
+for (auto frameIndex = 0; frameIndex < 49; frameIndex++)
 {
 
     object->applyAnimation(animationName, frameIndex);
 
+//    object->applyAnimation(animationName, 30);
+
     controller->render();
+
+//	this_thread::sleep_for(3s);
 
     this_thread::sleep_for(0.1s);
 }

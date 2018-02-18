@@ -70,7 +70,7 @@ void FSGLMesh::updateGlAnimationTransformation() {
 	if (vertexObject->transformMatrix.get() == nullptr)
 	{
 
-	cout << "Vertex tranform matrix is null, do not apply animation" << endl;
+	cout << "Vertex transform matrix is null, do not apply animation" << endl;
 
         glVertices[i + 5] = 1;
         glVertices[i + 6] = 0;
