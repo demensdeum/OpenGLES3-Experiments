@@ -51,7 +51,7 @@ public:
     
     void updateAnimationTransformations();
     
-    void playAnimation(shared_ptr<string> animationName, double animationOffset);
+    void applyAnimation(shared_ptr<string> animationName, double animationOffset);
     
     void postRenderUpdate();
     

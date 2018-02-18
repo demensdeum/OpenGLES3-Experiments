@@ -160,11 +160,13 @@ void FSGLObject::updateAnimationTransformations() {
 
 }
 
-void FSGLObject::playAnimation(shared_ptr<string> animationName, double animationOffset) {
+void FSGLObject::applyAnimation(shared_ptr<string> animationName, double animationOffset) {
 
     cout << "FSGLObject playing animation: " << animationName->c_str() << endl;
 
-    model->playAnimation(animationName, animationOffset);
+    model->applyAnimation(animationName, animationOffset);
+
+   updateAnimationTransformations();
 
 }
 

@@ -24,28 +24,6 @@ FSGLAnimation::FSGLAnimation() {
 FSGLAnimation::FSGLAnimation(const FSGLAnimation& orig) {
 }
 
-void FSGLAnimation::increment() {
-    
-    currentOffset += 1;
-    
-cout << "increment" << endl;
-
-    if (currentOffset > duration) {
-        
-        currentOffset = 0;
-     
-	cout << "reset current offset" << endl;
-   
-    }
-
-	for (auto nodeAnimation : nodeAnimations) {
-
-		nodeAnimation->currentOffset = currentOffset;
-
-	}
-
-}
-
 void FSGLAnimation::setCurrentOffset(double offset) {
 
 	currentOffset = offset;

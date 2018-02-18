@@ -250,8 +250,6 @@ shared_ptr<FSGLObject> FSGLCore::getObjectWithID(int id) {
 
 void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
     
-    object->updateAnimationTransformations();
-    
     auto model = object->model;
 
     for (unsigned int meshIndex = 0; meshIndex < model->meshes.size(); meshIndex++) {

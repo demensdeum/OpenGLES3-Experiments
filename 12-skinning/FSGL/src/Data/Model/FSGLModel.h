@@ -53,13 +53,10 @@ public:
     virtual shared_ptr<string> serializeIntoString();
     virtual shared_ptr<FSGLSerializable> deserializeFromString(shared_ptr<string> serializedData);     
     
-    void playAnimation(shared_ptr<string> animationName, double animationOffset);
+    void applyAnimation(shared_ptr<string> animationName, double animationOffset);
     void incrementAnimation();
     
     shared_ptr<FSGLAnimation> currentAnimation;    
-    
-    shared_ptr<FSGLVector> currentAnimationPositionVectorForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex);
-    shared_ptr<FSGLQuaternion> currentAnimationRotationQuaternionForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex);
     
     shared_ptr<FSGLBone> findBone(shared_ptr<string> boneName);
     

@@ -29,28 +29,9 @@ FSGLMesh::FSGLMesh() {
 FSGLMesh::FSGLMesh(const FSGLMesh& orig) {
 }
 
-shared_ptr<FSGLVector> FSGLMesh::currentAnimationPositionVectorForVertexIndex(int vertexIndex) {
-
-    auto vector = parentModel->currentAnimationPositionVectorForMeshForVertexIndex(shared_from_this(), vertexIndex);
-
-    return vector;
-}
-
-shared_ptr<FSGLQuaternion> FSGLMesh::currentAnimationRotationQuaternionForVertexIndex(int vertexIndex) {
-
-    auto quaternion = parentModel->currentAnimationRotationQuaternionForMeshForVertexIndex(shared_from_this(), vertexIndex);
-
-    return quaternion;
-}
-
 shared_ptr<FSGLVertex> FSGLMesh::vertexWithID(int index) {
 
 	return verticesObjects[index];
-
-}
-
-void FSGLMesh::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrixx) {
-
 
 }
 

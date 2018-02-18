@@ -51,18 +51,6 @@ shared_ptr<FSGLSerializable> FSGLModel::deserializeFromString(shared_ptr<string>
     return object;
 }
 
-shared_ptr<FSGLVector> FSGLModel::currentAnimationPositionVectorForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex) {
-    
-    return shared_ptr<FSGLVector>();
-
-}
-
-shared_ptr<FSGLQuaternion> FSGLModel::currentAnimationRotationQuaternionForMeshForVertexIndex(shared_ptr<FSGLMesh> mesh, int vertexIndex) {
-
-    return shared_ptr<FSGLQuaternion>();
-
-}
-
 shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
     
     for (auto mesh : meshes) {
@@ -83,7 +71,7 @@ shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
     
 }
 
-void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {
+void FSGLModel::applyAnimation(shared_ptr<string> animationName, double animationOffset) {
     
     for (auto animation : animations) {
         
@@ -91,17 +79,10 @@ void FSGLModel::playAnimation(shared_ptr<string> animationName, double animation
             
             currentAnimation = animation;
             currentAnimation->setCurrentOffset(animationOffset);
-		
 
 		return;
         }
     }
-}
-
-void FSGLModel::incrementAnimation() {
-    
-    currentAnimation->increment();
-    
 }
 
 FSGLModel::~FSGLModel() {

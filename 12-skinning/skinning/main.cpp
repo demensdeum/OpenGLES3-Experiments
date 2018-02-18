@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 	for (auto frameIndex = 0; frameIndex < 39; frameIndex++)
 {
 
-    object->playAnimation(animationName, frameIndex);
+    object->applyAnimation(animationName, frameIndex);
 
     controller->render();
 
