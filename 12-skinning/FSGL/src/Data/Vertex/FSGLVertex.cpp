@@ -24,9 +24,25 @@ void FSGLVertex::updateTransformMatrix() {
 
 }
 
+void FSGLVertex::resetTransformationMatrix() {
+
+	cout << "resetTransformationMatrix()" << endl;
+
+	transformMatrix = make_shared<FSGLMatrix>();
+
+}
+
 void FSGLVertex::applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> transformationMatrix, float weight) {
 
-	cout << "apply transformation matrix with weight" << endl;
+	if (transformMatrix.get() == nullptr) {
+
+		cout << "FSGLVertex::applyTransformationMatrixWithWeight - vertex transform matrix not installed/resetted - exit" << endl;
+		
+		exit(55);
+
+	}
+
+	cout << "FSGLVertex::applyTransformationMatrixWithWeight" << " weight: " << weight << ";" << endl;
 
 	if (transformationMatrix.get() == nullptr)
 {
@@ -35,6 +51,9 @@ void FSGLVertex::applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> tran
 	exit(3);
 }
 
-	this->transformMatrix = transformationMatrix;
+	weight = weight;
+	auto weightedMatrix = transformationMatrix->matrix * weight;
+
+	this->transformMatrix->matrix = this->transformMatrix->matrix + weightedMatrix;
 
 }

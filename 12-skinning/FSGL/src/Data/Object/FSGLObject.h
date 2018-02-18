@@ -57,6 +57,8 @@ public:
     
 private:
     
+	void resetTransformationMatrix();
+
     void incrementAnimation();
     
 };

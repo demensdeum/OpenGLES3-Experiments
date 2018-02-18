@@ -35,6 +35,16 @@ shared_ptr<FSGLVertex> FSGLMesh::vertexWithID(int index) {
 
 }
 
+void FSGLMesh::resetTransformationMatrix() {
+
+	    for (auto vertexObject : verticesObjects) {
+
+		vertexObject->resetTransformationMatrix();
+
+	}
+
+}
+
 shared_ptr<FSGLBone> FSGLMesh::findBone(shared_ptr<string> boneName) {
 
     for (auto bone : bones) {
@@ -99,7 +109,7 @@ else
 	auto transformMatrix = vertexObject->transformMatrix;
 	auto transformationMatrix = transformMatrix->matrix;
 
-	cout << "Vertex transform animation applied" << endl;
+	//cout << "Vertex transform animation applied" << endl;
 
         glVertices[i + 5] = transformationMatrix[0][0];
         glVertices[i + 6] = transformationMatrix[1][0];

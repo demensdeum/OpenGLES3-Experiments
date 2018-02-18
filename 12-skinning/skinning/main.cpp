@@ -36,12 +36,12 @@ int main(int argc, char** argv) {
 
     auto animationName = make_shared<string>("Armature|ArmatureAction");
 
-for (auto frameIndex = 0; frameIndex < 49; frameIndex++)
+for (auto frameIndex = 0; frameIndex < 29; frameIndex++)
 {
 
     object->applyAnimation(animationName, frameIndex);
 
-//    object->applyAnimation(animationName, 30);
+//    object->applyAnimation(animationName, 23);
 
     controller->render();
 

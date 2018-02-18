@@ -38,8 +38,6 @@ void FSGLBone::applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMa
 
 	for (auto vertexWeight : vertexWeights) {
 
-		cout << "vertex weight " << vertexWeight->vertex << endl;
-
 		vertexWeight->applyTransformationMatrix(transformationMatrix);
 
 	}

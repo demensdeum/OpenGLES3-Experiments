@@ -51,6 +51,16 @@ shared_ptr<FSGLSerializable> FSGLModel::deserializeFromString(shared_ptr<string>
     return object;
 }
 
+void FSGLModel::resetTransformationMatrix() {
+
+    for (auto mesh : meshes) {
+
+		mesh->resetTransformationMatrix();
+
+	}
+
+}
+
 shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
     
     for (auto mesh : meshes) {

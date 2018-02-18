@@ -60,6 +60,8 @@ public:
     
     shared_ptr<FSGLBone> findBone(shared_ptr<string> boneName);
     
+	void resetTransformationMatrix();
+
 private:
     
 

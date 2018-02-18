@@ -39,6 +39,8 @@ class FSGLVertex {
 
 		void applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> transformationMatrix, float weight);
 
+		void resetTransformationMatrix();
+
 };
 
 #endif

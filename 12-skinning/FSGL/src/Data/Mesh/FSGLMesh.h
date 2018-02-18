@@ -64,6 +64,8 @@ public:
     static const int glVertexCount = 5 + 16;
     static const GLsizei glVertexSize = sizeof(GLfloat) * glVertexCount;
     
+	void resetTransformationMatrix();
+
     void updateGlData();
     void updateGlAnimationTransformation();
     

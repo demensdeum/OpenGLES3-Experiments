@@ -134,6 +134,13 @@ shared_ptr<FSGLSerializable> FSGLObject::deserializeFromFile(shared_ptr<string> 
     return FSGLSerializable::deserializeFromFile(path);
 }
 
+void FSGLObject::resetTransformationMatrix() {
+
+	model->resetTransformationMatrix();
+
+
+}
+
 void FSGLObject::updateAnimationTransformations() {
 
 	cout << "FSGLObject - Updating animation transformations" << endl;
@@ -173,6 +180,8 @@ void FSGLObject::updateAnimationTransformations() {
 }
 
 void FSGLObject::applyAnimation(shared_ptr<string> animationName, double animationOffset) {
+
+	resetTransformationMatrix();
 
     cout << "FSGLObject playing animation: " << animationName->c_str() << endl;
 
