@@ -46,6 +46,18 @@ cout << "increment" << endl;
 
 }
 
+void FSGLAnimation::setCurrentOffset(double offset) {
+
+	currentOffset = offset;
+
+	for (auto nodeAnimation : nodeAnimations) {
+
+		nodeAnimation->currentOffset = currentOffset;
+
+	}	
+
+}
+
 FSGLAnimation::~FSGLAnimation() {
 }
 

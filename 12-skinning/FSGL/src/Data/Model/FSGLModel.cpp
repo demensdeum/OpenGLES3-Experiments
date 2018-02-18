@@ -85,22 +85,17 @@ shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
 
 void FSGLModel::playAnimation(shared_ptr<string> animationName, double animationOffset) {
     
-    if (currentAnimation != nullptr && currentAnimation->name->compare(animationName->c_str())== 0) {
-        
-        currentAnimation->currentOffset = animationOffset;
-        
-        return;
-    }
-    
     for (auto animation : animations) {
         
         if (animation->name->compare(animationName->c_str()) == 0) {
             
             currentAnimation = animation;
-            
+            currentAnimation->setCurrentOffset(animationOffset);
+		
+
+		return;
         }
     }
-    
 }
 
 void FSGLModel::incrementAnimation() {

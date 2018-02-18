@@ -37,6 +37,8 @@ public:
     vector< shared_ptr<FSGLNodeAnimation> >  nodeAnimations;
     
     void increment();
+
+	void setCurrentOffset(double offset);
     
 private:
 

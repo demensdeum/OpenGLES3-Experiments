@@ -170,16 +170,6 @@ void FSGLObject::playAnimation(shared_ptr<string> animationName, double animatio
 
 void FSGLObject::postRenderUpdate() {
 
-    auto currentAnimation = model->currentAnimation;
-    
-	if (currentAnimation.get() == nullptr) {
-
-		return;
-
-	}
-
-    model->incrementAnimation();
-
 }
 
 FSGLObject::~FSGLObject() {

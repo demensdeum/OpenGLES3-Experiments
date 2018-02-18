@@ -36,16 +36,15 @@ int main(int argc, char** argv) {
 
     auto animationName = make_shared<string>("Cube|Cube");
 
-    object->playAnimation(animationName, 0);
+	for (auto frameIndex = 0; frameIndex < 39; frameIndex++)
+{
 
-    for (auto frameIndex = 0; frameIndex < 19; frameIndex++) {
+    object->playAnimation(animationName, frameIndex);
 
-        controller->render();
+    controller->render();
 
-        this_thread::sleep_for(0.1s);
-
-    }
-
+    this_thread::sleep_for(0.1s);
+}
 
     return 0;
 }

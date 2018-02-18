@@ -206,7 +206,7 @@ void FSGLCore::render() {
         
         if (renderIDs.size() < 1 || renderIDs.find(objectID) != renderIDs.end()) {
         
-            this->renderObject(object);
+            renderObject(object);
             
         }
 
