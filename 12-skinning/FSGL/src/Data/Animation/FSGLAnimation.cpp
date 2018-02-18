@@ -13,6 +13,8 @@
 
 #include "FSGLAnimation.h"
 
+#include <iostream>
+
 FSGLAnimation::FSGLAnimation() {
     
     currentOffset = 0;
@@ -26,11 +28,22 @@ void FSGLAnimation::increment() {
     
     currentOffset += 1;
     
+cout << "increment" << endl;
+
     if (currentOffset > duration) {
         
         currentOffset = 0;
-        
+     
+	cout << "reset current offset" << endl;
+   
     }
+
+	for (auto nodeAnimation : nodeAnimations) {
+
+		nodeAnimation->currentOffset = currentOffset;
+
+	}
+
 }
 
 FSGLAnimation::~FSGLAnimation() {

@@ -77,6 +77,8 @@ public:
     
     void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrixx);
     
+	shared_ptr<FSGLVertex> vertexWithID(int index);
+
 private:
 
     shared_ptr<FSGLVector> currentAnimationPositionVectorForVertexIndex(int vertexIndex);

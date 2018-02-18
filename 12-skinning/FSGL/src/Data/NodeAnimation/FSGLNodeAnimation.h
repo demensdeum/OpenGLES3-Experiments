@@ -40,7 +40,9 @@ public:
     
     shared_ptr<FSGLNode> node;
     
-	shared_ptr<FSGLMatrix> transformationMatrix();
+	shared_ptr<FSGLMatrix>transformationMatrix();
+
+	double currentOffset;
 
 private:
 

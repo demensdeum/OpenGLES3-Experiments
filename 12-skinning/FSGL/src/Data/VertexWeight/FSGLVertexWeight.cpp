@@ -22,6 +22,12 @@ FSGLVertexWeight::FSGLVertexWeight(const FSGLVertexWeight& orig) {
 FSGLVertexWeight::~FSGLVertexWeight() {
 }
 
+void FSGLVertexWeight::applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix) {
+
+	vertex->applyTransformationMatrixWithWeight(transformationMatrix, weight);
+
+}
+
 shared_ptr<FSGLMatrix> FSGLVertexWeight::transformationMatrix() {
 
 	auto transformationMatrix = bone->transformationMatrix();

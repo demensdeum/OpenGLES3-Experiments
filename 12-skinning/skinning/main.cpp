@@ -34,11 +34,11 @@ int main(int argc, char** argv) {
 
     controller->addObject(object);
 
-    auto animationName = make_shared<string>("Armature|Move");
+    auto animationName = make_shared<string>("Cube|Cube");
 
     object->playAnimation(animationName, 0);
 
-    for (auto frameIndex = 0; frameIndex < 10; frameIndex++) {
+    for (auto frameIndex = 0; frameIndex < 19; frameIndex++) {
 
         controller->render();
 

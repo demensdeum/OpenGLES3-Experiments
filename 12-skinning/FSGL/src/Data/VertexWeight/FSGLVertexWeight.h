@@ -16,6 +16,8 @@
 
 #include "../Bone/FSGLBone.h"
 
+
+class FSGLVertex;
 class FSGLBone;
 class FSGLMatrix;
 
@@ -27,12 +29,14 @@ public:
     FSGLVertexWeight(const FSGLVertexWeight& orig);
     virtual ~FSGLVertexWeight();
     
-    int vertexID;
+    shared_ptr<FSGLVertex> vertex;
     float weight;
     
 	shared_ptr<FSGLBone> bone;
 
 	shared_ptr<FSGLMatrix> transformationMatrix();
+
+	void applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix);
 
 private:
 

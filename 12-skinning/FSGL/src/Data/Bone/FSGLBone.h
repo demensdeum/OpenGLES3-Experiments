@@ -43,7 +43,7 @@ public:
     
     shared_ptr<FSGLMatrix> offsetMatrix;
     
-    void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix);
+    void applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix);
     
     shared_ptr<FSGLMesh> mesh;
     

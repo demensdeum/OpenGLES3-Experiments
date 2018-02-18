@@ -21,19 +21,21 @@ FSGLNode::FSGLNode() {
 FSGLNode::FSGLNode(const FSGLNode& orig) {
 }
 
-void FSGLNode::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix) {
+void FSGLNode::applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix) {
     
     cout << "applyAnimationTransformations for node: " << name->c_str() << endl;
 
-    for (auto child : childs) {
-        
         if (bone.get() != nullptr) {
             
-            bone->applyAnimationTransformations(nodeAnimation, transformationMatrix);
+            bone->applyTransformationMatrix(transformationMatrix);
             
         }
+
+    for (auto child : childs) {
         
-        child->applyAnimationTransformations(nodeAnimation, transformationMatrix);
+	cout << "applyAnimationTransformations for child node: " << child->name->c_str() << endl;
+
+        child->applyTransformationMatrix(transformationMatrix);
         
     }    
 }

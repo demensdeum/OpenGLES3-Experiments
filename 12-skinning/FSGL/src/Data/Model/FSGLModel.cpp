@@ -77,6 +77,8 @@ shared_ptr<FSGLBone> FSGLModel::findBone(shared_ptr<string> boneName) {
         
     }
     
+	cout << "Bone not found " << boneName->c_str() << endl;
+
     return shared_ptr<FSGLBone>();
     
 }

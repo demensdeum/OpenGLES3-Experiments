@@ -46,7 +46,7 @@ public:
     
     glm::mat4 matrix;
     
-    void applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix);
+    void applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix);
     
     shared_ptr<FSGLNode> findNode(shared_ptr<string> nodeName);
     

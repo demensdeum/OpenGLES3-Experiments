@@ -12,7 +12,7 @@
  */
 
 #include "FSGLBone.h"
-
+ 
 #include <iostream>
 
 #include "../Mesh/FSGLMesh.h"
@@ -23,16 +23,20 @@ FSGLBone::FSGLBone() {
 FSGLBone::FSGLBone(const FSGLBone& orig) {
 }
 
-void FSGLBone::applyAnimationTransformations(shared_ptr<FSGLNodeAnimation> nodeAnimation, shared_ptr<FSGLMatrix> transformationMatrix) {
+void FSGLBone::applyTransformationMatrix(shared_ptr<FSGLMatrix> transformationMatrix) {
     
     cout << "applyAnimationTransformations for bone: " << name->c_str() << endl;
     
-    if (mesh != nullptr) {
-        
-        mesh->applyAnimationTransformations(nodeAnimation, transformationMatrix);
-        
-    }
+	cout << "bone child vertexWeights count: " << vertexWeights.size() << endl;
     
+	for (auto vertexWeight : vertexWeights) {
+
+		cout << "vertex weight " << vertexWeight->vertex << endl;
+
+		vertexWeight->applyTransformationMatrix(transformationMatrix);
+
+	}
+
 }
 
 shared_ptr<FSGLMatrix> FSGLBone::transformationMatrix() {

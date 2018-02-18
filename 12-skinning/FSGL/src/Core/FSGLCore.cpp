@@ -282,6 +282,13 @@ void FSGLCore::renderObject(shared_ptr<FSGLObject> object) {
 
         auto material = mesh->material;
 
+	if (material == NULL) {
+
+            cout << "FSGLCore: cannot load material " << endl;
+
+            exit(1);
+	}
+
         auto surface = material->surface;
 
         if (surface == NULL) {

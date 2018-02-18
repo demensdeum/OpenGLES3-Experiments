@@ -144,18 +144,20 @@ void FSGLObject::updateAnimationTransformations() {
 
 	}
 
-    auto transformationMatrix = make_shared<FSGLMatrix>();
-    
     for (auto nodeAnimation : currentAnimation->nodeAnimations) {
         
         auto node = nodeAnimation->node;
+
+	 auto transformationMatrix = nodeAnimation->transformationMatrix();
         
         if (node.get() != nullptr) {
         
-            node->applyAnimationTransformations(nodeAnimation, transformationMatrix);
+            node->applyTransformationMatrix(transformationMatrix);
        
         }
+
     }
+
 }
 
 void FSGLObject::playAnimation(shared_ptr<string> animationName, double animationOffset) {

@@ -22,10 +22,10 @@ class FSGLVertex {
 	public:
 		FSGLVertex(float x, float y, float z, float u, float v);
 
-		shared_ptr<FSGLVector> animatedPosition;
 		shared_ptr<FSGLVector> position;
-		shared_ptr<FSGLMatrix> transformMatrix;
 		shared_ptr<FSGLUVTextureCoordinates> uvTextureCoordinates;
+
+		shared_ptr<FSGLMatrix> transformMatrix;
 
 		weak_ptr<FSGLMesh> mesh;
 
@@ -36,6 +36,9 @@ class FSGLVertex {
 		void updateTransformMatrix();
 
 		void updateAnimatedPosition();
+
+		void applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> transformationMatrix, float weight);
+
 };
 
 #endif

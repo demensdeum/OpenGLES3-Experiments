@@ -1,30 +1,38 @@
  
 #include "FSGLVertex.h"
 
+#include <iostream>
+#include <string>
+
+using namespace std;
+
 FSGLVertex::FSGLVertex(float x, float y, float z, float u, float v) {
 
 	position = make_shared<FSGLVector>(x, y, z);
 	uvTextureCoordinates = make_shared<FSGLUVTextureCoordinates>(u , v);
 
-	animatedPosition = position;
 }
 
 void FSGLVertex::updateAnimatedPosition() {
 
-	animatedPosition = position;
 
-	if (vertexWeights.size() > 0) {
-
-		auto vertexWeight = vertexWeights[0];
-
-		auto transformationMatrix = vertexWeight->transformationMatrix();
-
-		
-	}
 }
 
 void FSGLVertex::updateTransformMatrix() {
 
 	
+
+}
+
+void FSGLVertex::applyTransformationMatrixWithWeight(shared_ptr<FSGLMatrix> transformationMatrix, float weight) {
+
+	cout << "apply transformation matrix with weight" << endl;
+
+	if (transformMatrix.get() == nullptr)
+{
+	cout << "transformMatrix = nullptr" << endl;
+}
+
+	this->transformMatrix = transformationMatrix;
 
 }

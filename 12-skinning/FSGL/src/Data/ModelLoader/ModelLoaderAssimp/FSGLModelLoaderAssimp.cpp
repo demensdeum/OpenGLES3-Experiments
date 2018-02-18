@@ -149,6 +149,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                     auto boneName = bone->mName.C_Str();
 
+			cout << "Bone loaded " << boneName << endl;
+
                     convertedBone->name = make_shared<string>(boneName);
 
                     convertedBone->mesh = convertedMesh;
@@ -159,7 +161,7 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
                         auto convertedWeight = make_shared<FSGLVertexWeight>();
 
-                        convertedWeight->vertexID = weight.mVertexId;
+                        convertedWeight->vertex = convertedMesh->vertexWithID(weight.mVertexId);
                         convertedWeight->weight = weight.mWeight;
 
                         convertedBone->vertexWeights.push_back(convertedWeight);
@@ -268,11 +270,15 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
 
             auto animationName = animation->mName.C_Str();
 
+		cout << "converted animation name: " << animationName << endl;
+
             auto convertedAnimation = make_shared<FSGLAnimation>();
 
             convertedAnimation->name = make_shared<string>(animationName);
             convertedAnimation->duration = animation->mDuration;
             convertedAnimation->ticksPerSecond = animation->mTicksPerSecond;
+
+		cout << "convertedAnimation duration:" << convertedAnimation->duration << endl;
 
             for (auto nodeAnimationIndex = 0; nodeAnimationIndex < animation->mNumChannels; nodeAnimationIndex++) {
 
@@ -300,6 +306,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                     float vectorY = vector.y;
                     float vectorZ = vector.z;
 
+			cout << "Animation " << positionKeyframeIndex << " Position vector: " << vector.x << "; " << vector.y << "; " << vector.z << endl;
+
                     auto convertedVector = make_shared<FSGLVector>(vectorX, vectorY, vectorZ);
 
                     convertedPositionKeyframe->vector = convertedVector;
@@ -322,6 +330,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                     convertedQuaternion->z = quaternion.z;
                     convertedQuaternion->w = quaternion.w;
                     
+			cout << "Animation " << rotationKeyframeIndex << " Quaternion: " << quaternion.x << "; " << quaternion.y << "; " << quaternion.z << "; " << quaternion.w << ";" << endl;
+
                     convertedRotationKeyframe->quaternion = convertedQuaternion;
                     
                     convertedNodeAnimation->rotations.push_back(convertedRotationKeyframe);
@@ -339,6 +349,8 @@ shared_ptr<FSGLModel> FSGLModelLoaderAssimp::loadModel(shared_ptr<string> modelP
                     float vectorY = vector.y;
                     float vectorZ = vector.z;
                     
+			cout << "Animation " << scalingKeyframeIndex << " Scaling vector: " << vector.x << "; " << vector.y << "; " << vector.z << endl;
+
                     auto convertedVector = make_shared<FSGLVector>(vectorX, vectorY, vectorZ);
 
                     convertedScalingKeyframe->vector = convertedVector;
