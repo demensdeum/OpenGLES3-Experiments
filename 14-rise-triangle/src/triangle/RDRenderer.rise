@@ -36,7 +36,7 @@ class RDRenderer
 		context.bufferData(this.context.ARRAY_BUFFER, new Float32Array(vertices), this.context.STATIC_DRAW);
 		context.bindBuffer(this.context.ARRAY_BUFFER, vertexBuffer);
 
-	      var position = this.context.getAttribLocation(shaderProgram, "position");
+		declare position = this.context.getAttribLocation(shaderProgram, "position");
 		context.vertexAttribPointer(position, 3, this.context.FLOAT, false, 0, 0); 
 		context.enableVertexAttribArray(position);
 
