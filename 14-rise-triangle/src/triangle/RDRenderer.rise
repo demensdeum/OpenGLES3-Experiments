@@ -1,0 +1,49 @@
+class RDRenderer
+{
+	private declare canvas : Rise.Common.Classes.Canvas
+	private declare context : Rise.Common.Classes.OpenGLContext
+
+	public method initialize(with canvas : Rise.Common.Classes.Canvas)
+	{
+		this.canvas = canvas
+		context = canvas.getContext('webgl')
+	}
+
+	public method start()
+	{
+
+		declare vertices = [ 0.0, 0.5, 0.0, 0.5, -0.5, 0.0, -0.5, -0.5, 0.0]
+
+		declare vertexShaderCode = "#version 100\nattribute vec3 position;\nvoid main() {\n   gl_Position = vec4(position, 1.0);\n}\n"
+		declare fragmentShaderCode = "#version 100\nvoid main() {\n   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n}\n"
+
+		declare vertexShader = this.context.createShader(this.context.VERTEX_SHADER)
+		context.shaderSource(vertexShader, vertexShaderCode)
+		context.compileShader(vertexShader)
+
+		declare fragmentShader = this.context.createShader(this.context.FRAGMENT_SHADER)
+		context.shaderSource(fragmentShader, fragmentShaderCode)
+		context.compileShader(fragmentShader)
+
+		declare shaderProgram = this.context.createProgram()
+		context.attachShader(shaderProgram, vertexShader)
+		context.attachShader(shaderProgram, fragmentShader)
+		context.linkProgram(shaderProgram)
+		context.useProgram(shaderProgram)
+
+		declare vertexBuffer = this.context.createBuffer();
+		context.bindBuffer(this.context.ARRAY_BUFFER, vertexBuffer);
+		context.bufferData(this.context.ARRAY_BUFFER, new Float32Array(vertices), this.context.STATIC_DRAW);
+		context.bindBuffer(this.context.ARRAY_BUFFER, vertexBuffer);
+
+	      var position = this.context.getAttribLocation(shaderProgram, "position");
+		context.vertexAttribPointer(position, 3, this.context.FLOAT, false, 0, 0); 
+		context.enableVertexAttribArray(position);
+
+         	this.context.clearColor(0.5, 0.5, 0.5, 0.9)
+		context.enable(this.context.DEPTH_TEST)
+		context.clear(this.context.COLOR_BUFFER_BIT)
+		context.viewport(0, 0, this.canvas.width, this.canvas.height)
+		context.drawArrays(this.context.TRIANGLES, 0, 3)
+	}
+}

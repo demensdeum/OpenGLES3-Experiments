@@ -1,0 +1,8 @@
+public method main(arguments : RiseBuiltInClasses.list<RiseBuiltInClasses.String> )
+{
+	declare canvas = document.getElementById('canvas')
+
+	declare renderer = new RDRenderer()
+	renderer.initialize(with canvas : canvas)
+	renderer.start()
+}
